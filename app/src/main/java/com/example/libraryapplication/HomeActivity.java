@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.SearchView;
@@ -15,9 +16,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
-//searchbar isn't fully done
-public class HomeActivity extends AppCompatActivity {
 
+public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,26 +25,12 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
 
+
         //or try OnItemSelectedListener
         BottomNavigationView bottomNavigationView = findViewById(R.id.bot_nav);
         bottomNavigationView.setOnItemSelectedListener(navigationItemSelectedListener);
         getSupportFragmentManager().beginTransaction().replace(R.id.container,new HomeFragment()).commit();
-
-        /*ArrayList<StaticRVModel> item = new ArrayList<>();
-        item.add(new StaticRVModel("Fiction"));
-        item.add(new StaticRVModel("Poetry"));
-        item.add(new StaticRVModel("Novel"));
-        item.add(new StaticRVModel("History"));
-        item.add(new StaticRVModel("Drama"));
-        item.add(new StaticRVModel("Fantasy"));
-        item.add(new StaticRVModel("Detective"));
-        item.add(new StaticRVModel("Spiritual"));
-
-        //private SearchView searchBar;
-        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        StaticRVAdapter staticRVAdapter = new StaticRVAdapter(item);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        recyclerView.setAdapter(staticRVAdapter);*/
+        
     }
 
     //or try OnItemSelectedListener
@@ -63,7 +49,7 @@ public class HomeActivity extends AppCompatActivity {
                     selectedFragment = new FavoritesFragment();
                     break;
 
-                case R.id.read:
+                case R.id.add:
                     selectedFragment = new ReadFragment();
                     break;
 
@@ -76,5 +62,6 @@ public class HomeActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.container,selectedFragment).commit();
             return true;
         }
+
     };
 }
