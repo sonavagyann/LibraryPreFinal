@@ -3,9 +3,9 @@
     android:shape="rectangle">
 
     <gradient
-        android:startColor="#598BAF"
-        android:endColor="#598BAF"/>
+        android:startColor="#d3d3d3"
+        android:endColor="#d3d3d3"/>
     <corners
-        android:bottomRightRadius="200dp"
-        android:bottomLeftRadius="200dp"/>
+        android:bottomRightRadius="100dp"
+        android:bottomLeftRadius="100dp"/>
 </shape>

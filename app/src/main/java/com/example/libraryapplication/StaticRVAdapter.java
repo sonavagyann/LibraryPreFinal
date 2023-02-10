@@ -1,79 +1,50 @@
 package com.example.libraryapplication;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
-import java.util.List;
 
-public class StaticRVAdapter extends RecyclerView.Adapter<StaticRVAdapter.StaticRVViewHolder>{
+public class StaticRVAdapter extends RecyclerView.Adapter<StaticRVAdapter.MyViewHolder>{
 
-    public StaticRVAdapter(List items, Context context) {
-        this.items = items;
-        this.context = context;
-    }
-
-    private List<StaticRVModel> items;
     Context context;
-    int row_index = -1;
+    ArrayList<StaticRVModel> staticRVModels;
 
-
-
-    public StaticRVAdapter(List<StaticRVModel> items) {
-        this.items = items;
-        this.context = context;
+    public StaticRVAdapter(Context context, ArrayList<StaticRVModel> staticRVModels) {
+        this.context=context;
+        this.staticRVModels=staticRVModels;
     }
 
     @NonNull
     @Override
-    public StaticRVViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new StaticRVViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.static_rv_item, parent, false));
+    public StaticRVAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.static_rv_item, parent, false);
+        return new StaticRVAdapter.MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull StaticRVViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        holder.textView.setText(items.get(position).getText());
+    public void onBindViewHolder(@NonNull  MyViewHolder holder, int position) {
+        holder.text.setText(staticRVModels.get(position).getGenres());
 
-        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                row_index = position;
-                notifyDataSetChanged();
-            }
-        });
-
-        if(row_index == position){
-            holder.linearLayout.setBackgroundResource(R.drawable.static_rv_selected_background);
-        }
-        else{
-            holder.linearLayout.setBackgroundResource(R.drawable.static_rv_background);
-
-        }
     }
 
     @Override
     public int getItemCount(){
-        return items.size();
+        return staticRVModels.size();
     }
 
-    public static class StaticRVViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder{
 
-        TextView textView;
-        LinearLayout linearLayout;
+        TextView text;
 
-        //had NonNull
-        public StaticRVViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView= (TextView) itemView.findViewById(R.id.text);
-            linearLayout=(LinearLayout) itemView.findViewById(R.id.linearlayout);
+            text = itemView.findViewById(R.id.text);
         }
     }
 }

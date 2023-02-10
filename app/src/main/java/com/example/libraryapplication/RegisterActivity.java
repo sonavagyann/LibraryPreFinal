@@ -1,9 +1,11 @@
 package com.example.libraryapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,6 +37,12 @@ public class RegisterActivity extends AppCompatActivity {
             String pass = password.getText().toString();
             String repass = repassword.getText().toString();
 
+            Intent in = new Intent(RegisterActivity.this, PersonalInfoActivity.class);
+            in.putExtra("name", user);
+            in.putExtra("email", em);
+            in.putExtra("password", pass);
+            startActivity(in);
+
             //so that every field is filled
             if(user.equals("") || em.equals("") || pass.equals("")) {
                 Toast.makeText(RegisterActivity.this, "Fill all the fields", Toast.LENGTH_SHORT).show();
@@ -50,6 +58,13 @@ public class RegisterActivity extends AppCompatActivity {
                             Toast.makeText(RegisterActivity.this, "Registered successfully", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                             startActivity(intent);
+
+                            /*
+                            Intent in = new Intent(RegisterActivity.this, PersonalInfoActivity.class);
+                            in.putExtra("keyusername", user);
+                            in.putExtra("keyemail", em);
+                            in.putExtra("keypassword", pass);
+                            startActivity(in);*/
                         }
                         else{
                             Toast.makeText(RegisterActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
@@ -68,4 +83,5 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
     }
+
 }

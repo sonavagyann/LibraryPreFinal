@@ -2,13 +2,13 @@ package com.example.libraryapplication;
 
 public class StaticRVModel {
 
-     private String text;
+    String genres;
 
-     public StaticRVModel(String text){
-          this.text=text;
-     }
+    public StaticRVModel(String genres) {
+        this.genres = genres;
+    }
 
-     public String getText(){
-          return text;
-     }
+    public String getGenres() {
+        return genres;
+    }
 }

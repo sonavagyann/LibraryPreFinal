@@ -100,4 +100,73 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <string-array name="genres">
+        <item>Fiction</item>
+        <item>Drama</item>
+        <item>Novel</item>
+        <item>Detective</item>
+        <item>Historical</item>
+        <item>Fantasy</item>
+        <item>Spiritual</item>
+    </string-array>
+
+
+    <string-array name="books">
+        <item>The Hunger Games</item>
+        <item>Catching Fire</item>
+        <item>The Book Thief</item>
+        <item>Harry Potter and the Half-Blood Prince</item>
+        <item>Call Us What We Carry</item>
+        <item>Forty days of Musa Dagh</item>
+        <item>Murder of Roger Ackroyd</item>
+    </string-array>
+
+    <string-array name="pages">
+        <item>384</item>
+        <item>391</item>
+        <item>552</item>
+        <item>672</item>
+        <item>240</item>
+        <item>893</item>
+        <item>312</item>
+    </string-array>
+
+    <string-array name="authors">
+        <item>Suzanne Collins</item>
+        <item>Suzanne Collins</item>
+        <item>Markus Zusak</item>
+        <item>J.K.Rowling</item>
+        <item>Amanda Gorman</item>
+        <item>Franz Werfel</item>
+        <item>Agatha Christie</item>
+    </string-array>
+
+    <string-array name="descriptions">
+        <item>After arriving safely home from their unprecedented victory in the 74th Annual Hunger Games, Katniss Everdeen
+and Peeta Mellark discover that they must do a quick turnaround and begin a Victors Tour. As she and Peeta travel throughout
+the districts, Katniss senses a rebellion is stirring. However, President Snow proves that he is still very
+much in control when word comes of a cruel change in the rules for the upcoming 75th Hunger Games.</item>
+
+        <item>The Book Thief tells the story of Liesel, a little girl who is taken to a new home because her mother cannot afford
+to take care of her. The story is told by Death, who becomes a character you come to respect and even feel sorry for by the end.</item>
+
+        <item>The war against Voldemort is not going well. Dumbledore is absent from Hogwarts for long stretches of time.
+As in all wars, life goes on. Sixth-year students learn to Apparate. The classes are tough, though Harry receives some help from the
+mysterious Half-Blood Prince. And all the while Harry searches for the full story of the boy who became Voldemort-hoping to find what
+may be his only vulnerability.</item>
+
+        <item>In Call Us What We Carry, Gorman explores history, language, identity, and erasure through an imaginative and intimate
+collage. Harnessing the collective grief of a global pandemic, this beautifully designed volume features poems in many inventive styles
+and structures and shines a light on a moment of reckoning.</item>
+
+        <item>The novel tells the true story of several embattled Armenian villages whose inhabitants refused to obey deportation orders
+in 1915 and took up arms in self-defense, holding out for, in fact, more than the biblically resonant 40 days of the novel’s title. Many
+survived and were rescued by the French Navy. </item>
+
+        <item>Dr. James Sheppard, lives with his older unmarried sister Caroline in the country village of King’s Abbot on the outskirts
+of London. As the local physician with an active practice, Dr. Sheppard becomes emmeshed in a mysterious suicide and murder and the ensuing
+investigations into them over a nine-day period after the death of Roger Ackroyd. Detective Poirot, despite having decided to retire, takes
+the responsibility of finding out who killed Roger Ackroyd.</item>
+    </string-array>
 </resources>
