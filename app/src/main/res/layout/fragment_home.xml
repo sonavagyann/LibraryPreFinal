@@ -30,51 +30,53 @@
             android:textColor="@color/white"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/toolbar"
-            app:layout_constraintTop_toTopOf="@id/toolbar" />
+            app:layout_constraintTop_toTopOf="@id/toolbar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
 
-        <EditText
+        <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
-            android:hint="Search"
             android:drawableLeft="@drawable/baseline_search_24"
-            android:padding="15dp"
             android:singleLine="true"
-            android:textColorHint="@color/black"
-            android:textSize="17sp"
+            app:queryHint="Search"
             app:flow_firstHorizontalBias="0"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintBottom_toTopOf="@+id/categories"/>
 
         <TextView
             android:id="@+id/categories"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center_vertical"
-            android:text="Genres"
+            android:paddingStart="15dp"
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
-            android:paddingStart="15dp"
+            android:text="Genres"
+            android:textColor="#808588"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="#808588"
             app:layout_constraintBottom_toTopOf="@+id/recyclerView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/searchView" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="#d3d3d3"
             android:orientation="horizontal"
             android:scrollbarAlwaysDrawHorizontalTrack="true"
-            android:id="@+id/recyclerView"
-            android:background="#d3d3d3"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
+            app:layout_constraintBottom_toTopOf="@+id/bookFeed"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/categories"
-            app:layout_constraintBottom_toTopOf="@+id/bookFeed"
             app:layout_constraintVertical_bias="0">
 
         </androidx.recyclerview.widget.RecyclerView>
@@ -92,21 +94,22 @@
             android:textColor="#808588"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerView"
             app:layout_constraintBottom_toTopOf="@+id/recyclerView2"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:flow_verticalBias="0"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recyclerView"
-            app:layout_constraintVertical_bias="0">
+            app:layout_constraintVertical_bias="1.0">
 
         </androidx.recyclerview.widget.RecyclerView>
 

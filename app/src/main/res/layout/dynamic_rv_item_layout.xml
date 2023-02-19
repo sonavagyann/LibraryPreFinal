@@ -96,6 +96,32 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.616" />
 
+        <ImageView
+            android:id="@+id/addToRead"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:background="@drawable/add_button"
+            android:src="@drawable/baseline_add_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.248"
+            app:layout_constraintStart_toEndOf="@+id/book_cover"
+            app:layout_constraintTop_toBottomOf="@+id/book_pages"
+            app:layout_constraintVertical_bias="0.60" />
+
+        <ImageView
+            android:id="@+id/addToFav"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:background="@drawable/add_button"
+            android:src="@drawable/add_favorite"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.614"
+            app:layout_constraintStart_toEndOf="@+id/book_cover"
+            app:layout_constraintTop_toBottomOf="@+id/book_pages"
+            app:layout_constraintVertical_bias="0.60" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

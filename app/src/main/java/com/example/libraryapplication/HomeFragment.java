@@ -1,31 +1,45 @@
 package com.example.libraryapplication;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements RVInterface, UpdateGenre{
 
     ArrayList<StaticRVModel> staticRVModels = new ArrayList<>();
     ArrayList<DynamicRVModel> dynamicRVModels = new ArrayList<>();
     RecyclerView recyclerView;
     RecyclerView recyclerView2;
 
-    int images[] = {R.drawable.hunger_games_cover, R.drawable.catching_fire_cover,
-            R.drawable.book_thief_cover, R.drawable.halfblood_prince_cover,
-            R.drawable.call_us_cover, R.drawable.forty_days_cover,
-            R.drawable.murder_of_roger_cover};
+    DynamicRVAdapter dynamicRVAdapter;
+
+    StaticRVAdapter staticRVAdapter;
+
+    SearchView searchView;
+
+    int images[] = {R.drawable.and_still_i_rise_cover, R.drawable.call_us_cover,
+            R.drawable.catching_fire_cover, R.drawable.forty_days_cover,
+            R.drawable.hamlet_cover, R.drawable.halfblood_prince_cover,
+            R.drawable.jane_eyre_cover, R.drawable.me_before_you,
+            R.drawable.mere_christianity, R.drawable.murder_of_roger_cover,
+            R.drawable.romeo_and_juliet, R.drawable.samvel_cover,
+            R.drawable.alchemist_cover, R.drawable.the_big_sleep_cover,
+            R.drawable.urbatagirk_cover, R.drawable.matyan_cover,
+            R.drawable.book_thief_cover, R.drawable.fault_in_our_stars_cover,
+            R.drawable.gatsby_cover, R.drawable.the_hound_cover,
+            R.drawable.hunger_games_cover, R.drawable.the_sun_and_her_flowers_cover,
+            R.drawable.vardanank_cover, R.drawable.nineteen_eighty_four_cover};
 
     public HomeFragment(){
 
@@ -35,11 +49,14 @@ public class HomeFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setUpStaticRVModels();
-        setUpDynamicRVModels();
+
         if(getArguments() != null){
 
         }
+
+        setUpStaticRVModels();
+        setUpDynamicRVModels();
+
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,17 +65,36 @@ public class HomeFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView2 =  view.findViewById(R.id.recyclerView2);
 
-        StaticRVAdapter staticRVAdapter = new StaticRVAdapter(getContext(), staticRVModels);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        StaticRVAdapter staticRVAdapter = new StaticRVAdapter(this, getActivity(), staticRVModels);
         recyclerView.setAdapter(staticRVAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(layoutManager);
 
 
-        DynamicRVAdapter dynamicRVAdapter= new DynamicRVAdapter(getContext(), dynamicRVModels);//+(RVInterface) getContext()
+        DynamicRVAdapter dynamicRVAdapter= new DynamicRVAdapter(getContext(), dynamicRVModels, this);
         recyclerView2.setAdapter(dynamicRVAdapter);
         recyclerView2.setLayoutManager(new LinearLayoutManager(getContext()));
 
+
+        /*searchView = searchView.findViewById(R.id.searchView);
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                dynamicRVAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });*/
+
         return view;
     }
+
 
     private void setUpStaticRVModels(){
         String[] genres = getResources().getStringArray(R.array.genres);
@@ -67,16 +103,41 @@ public class HomeFragment extends Fragment {
             staticRVModels.add(new StaticRVModel(genres[i]));
         }
     }
+
+
+
+
+
     private void setUpDynamicRVModels() {
         String[] titles = getResources().getStringArray(R.array.books);
         String[] authors = getResources().getStringArray(R.array.authors);
         String[] pages = getResources().getStringArray(R.array.pages);
-        //String[] descriptions = getResources().getStringArray(R.array.descriptions);
+        String[] descriptions = getResources().getStringArray(R.array.descriptions);
 
         for (int i = 0; i < titles.length; i++) {
             dynamicRVModels.add(new DynamicRVModel(titles[i],
-                    authors[i], pages[i], images[i]));//+descriptions[i])
+                    authors[i], pages[i], images[i], descriptions[i]));
         }
     }
 
+    @Override
+    public void onItemClick(int position) {
+        Intent intent = new Intent(getContext(), BooksActivity.class);
+
+        intent.putExtra("Name", dynamicRVModels.get(position).getTitle());
+        intent.putExtra("Author", dynamicRVModels.get(position).getAuthor());
+        intent.putExtra("Pages", dynamicRVModels.get(position).getPages());
+        intent.putExtra("Description", dynamicRVModels.get(position).getDescriptions());
+        intent.putExtra("Image", dynamicRVModels.get(position).getImages());
+
+        startActivity(intent);
+    }
+
+    @Override
+    public void showBooks(int position, ArrayList<DynamicRVModel> list) {
+
+        dynamicRVAdapter = new DynamicRVAdapter(getContext(), list, this);
+        dynamicRVAdapter.notifyDataSetChanged();
+        recyclerView2.setAdapter(dynamicRVAdapter);
+    }
 }

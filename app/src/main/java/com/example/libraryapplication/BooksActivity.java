@@ -16,8 +16,8 @@ public class BooksActivity extends AppCompatActivity {
         String name = getIntent().getStringExtra("Name");
         String author = getIntent().getStringExtra("Author");
         String pages = getIntent().getStringExtra("Pages");
-        String description = getIntent().getStringExtra("Plot");
-        int image = getIntent().getIntExtra(" ", 0);
+        String description = getIntent().getStringExtra("Description");
+        int image = getIntent().getIntExtra("Image", 0);
 
         TextView book_name = findViewById(R.id.book_title);
         TextView book_author = findViewById(R.id.book_author);

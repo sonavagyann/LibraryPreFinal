@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    public static final String EXTRA_MESSAGE = "com.example.libraryapplication.MESSAGE";
     EditText username, email, password, repassword;
     Button regbutton;
     DBHelper DB;
@@ -55,16 +56,11 @@ public class RegisterActivity extends AppCompatActivity {
                         boolean insert = DB.DataInsert(user, em, pass);
                         //if everything goes well we get registered
                         if(insert){
+
                             Toast.makeText(RegisterActivity.this, "Registered successfully", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                             startActivity(intent);
 
-                            /*
-                            Intent in = new Intent(RegisterActivity.this, PersonalInfoActivity.class);
-                            in.putExtra("keyusername", user);
-                            in.putExtra("keyemail", em);
-                            in.putExtra("keypassword", pass);
-                            startActivity(in);*/
                         }
                         else{
                             Toast.makeText(RegisterActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
