@@ -12,15 +12,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
+import java.util.List;
 
-//implements Filterable
 
-public class DynamicRVAdapter extends RecyclerView.Adapter<DynamicRVAdapter.MyViewHolder>implements Filterable{
+public class DynamicRVAdapter extends RecyclerView.Adapter<DynamicRVAdapter.MyViewHolder>{
 
     private RVInterface rvInterface;
     Context context;
     ArrayList<DynamicRVModel> dynamicRVModels;
-    ArrayList<DynamicRVModel> dynamicRVModelsFull;
 
     private IClickAddFavListener iClickAddFavListener;
 
@@ -28,12 +27,6 @@ public class DynamicRVAdapter extends RecyclerView.Adapter<DynamicRVAdapter.MyVi
         void onClickAddFav(ImageView addFavImg, DynamicRVModel dynamicRVModel);
     }
 
-
-    /*
-    public void setFilteredList(ArrayList<DynamicRVModel> filteredList){
-        this.dynamicRVModels = filteredList;
-        notifyDataSetChanged();
-    }*/
 
     public void setData(ArrayList<DynamicRVModel> list, IClickAddFavListener listener){
         this.dynamicRVModels = list;
@@ -46,18 +39,11 @@ public class DynamicRVAdapter extends RecyclerView.Adapter<DynamicRVAdapter.MyVi
     public  DynamicRVAdapter(Context context, ArrayList<DynamicRVModel> dynamicRVModels, RVInterface rvInterface){
         this.context=context;
         this.dynamicRVModels = dynamicRVModels;
-        this.dynamicRVModelsFull=dynamicRVModels;
-        this.dynamicRVModels = new ArrayList<>(dynamicRVModelsFull);
+        this.dynamicRVModels=dynamicRVModels;
+        //this.dynamicRVModels = new ArrayList<>(dynamicRVModelsFilter);
         this.rvInterface=rvInterface;
 
     }
-
-    public void SearchList(ArrayList<DynamicRVModel> searchList){
-        this.dynamicRVModels = searchList;
-        notifyDataSetChanged();
-    }
-
-
 
 
     @NonNull
@@ -71,22 +57,11 @@ public class DynamicRVAdapter extends RecyclerView.Adapter<DynamicRVAdapter.MyVi
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
-        final DynamicRVModel dynamicRVModel = dynamicRVModels.get(position);
-        if(dynamicRVModel == null){
-            return;
-        }
+        holder.title.setText(dynamicRVModels.get(position).getTitle());
+        holder.author.setText(dynamicRVModels.get(position).getAuthor());
+        holder.pages.setText(dynamicRVModels.get(position).getPages());
+        holder.myImage.setImageResource(dynamicRVModels.get(position).getImages());
 
-        holder.title.setText(dynamicRVModel.getTitle());
-        holder.author.setText(dynamicRVModel.getAuthor());
-        holder.pages.setText(dynamicRVModel.getPages());
-        holder.myImage.setImageResource(dynamicRVModel.getImages());
-
-        holder.addFavImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                iClickAddFavListener.onClickAddFav(holder.addFavImg, dynamicRVModel);
-            }
-        });
     }
 
     @Override
@@ -94,49 +69,11 @@ public class DynamicRVAdapter extends RecyclerView.Adapter<DynamicRVAdapter.MyVi
         return dynamicRVModels.size();
     }
 
-
-
-    @Override
-    public Filter getFilter() {
-        return booksFilter;
+    public void filterList(ArrayList<DynamicRVModel> filteredList){
+        dynamicRVModels = filteredList;
+        notifyDataSetChanged();
     }
 
-    private final Filter booksFilter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence charSequence) {
-
-            ArrayList<DynamicRVModel> filteredBooks = new ArrayList<>();
-
-            if(charSequence == null || charSequence.length() == 0){
-
-                filteredBooks.addAll(dynamicRVModelsFull);
-
-            }
-            else{
-                String filterPattern = charSequence.toString().toLowerCase().trim();
-
-                for(DynamicRVModel books : dynamicRVModelsFull){
-
-                    if(books.title.toLowerCase().contains(filterPattern))
-                        filteredBooks.add(books);
-                }
-            }
-
-            FilterResults results = new FilterResults();
-            results.values = filteredBooks;
-            results.count = filteredBooks.size();
-
-            return results;
-        }
-
-        @Override
-        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-
-            dynamicRVModels.clear();
-            dynamicRVModels.addAll((ArrayList)filterResults.values);
-            notifyDataSetChanged();
-        }
-    };
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 

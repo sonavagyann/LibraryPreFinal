@@ -11,47 +11,34 @@ import android.os.Build;
 
 
 public class PersonalInfoActivity extends AppCompatActivity {
-    public static final String EXTRA_MESSAGE = "com.example.libraryapplication.MESSAGE";
 
 
-    private TextView username, email, password;
+    TextView userName, userEmail, userPass;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_profile);
 
-        //username = findViewById(R.id.profusername);
-        //email = findViewById(R.id.profemail);
-        //password = findViewById(R.id.profpassword);
 
-        //Intent intent = getIntent();
-        //String user = intent.getStringExtra("name");
-        //String em = intent.getStringExtra("email");
-        //String pass = intent.getStringExtra("password");
+        Intent getInfo = getIntent();
+        String username = getInfo.getStringExtra("username");
+        String email = getInfo.getStringExtra("email");
+        String password = getInfo.getStringExtra("password");
 
-        //username.setText(user);
-        //email.setText(em);
-        //password.setText(pass);
 
-        Intent intent = getIntent();
-        String message = intent.getStringExtra(RegisterActivity.EXTRA_MESSAGE);
-        TextView getUser = (TextView) findViewById(R.id.profusername);
-        getUser.setText(message);
+        userName = findViewById(R.id.profusername);
+        userName.setText(username);
+        //getActionBar().getTitle(username);
 
-        Intent intent2 = getIntent();
-        String message2 = intent2.getStringExtra(MainActivity.EXTRA_MESSAGE);
-        TextView getEmail = (TextView) findViewById(R.id.profemail);
-        getEmail.setText(message2);
+        userEmail = findViewById(R.id.profemail);
+        userEmail.setText(email);
 
-        Intent intent3 = getIntent();
-        String message3 = intent2.getStringExtra(MainActivity.EXTRA_MESSAGE);
-        TextView getPass = (TextView) findViewById(R.id.profpassword);
-        getPass.setText(message3);
+        userPass = findViewById(R.id.profpassword);
+        userPass.setText(password);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            getActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+
+
 
     }
 }

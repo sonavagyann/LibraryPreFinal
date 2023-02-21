@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    public static final String EXTRA_MESSAGE = "com.example.libraryapplication.MESSAGE";
     EditText username, email, password, repassword;
     Button regbutton;
     DBHelper DB;
@@ -38,11 +37,12 @@ public class RegisterActivity extends AppCompatActivity {
             String pass = password.getText().toString();
             String repass = repassword.getText().toString();
 
+            /*
             Intent in = new Intent(RegisterActivity.this, PersonalInfoActivity.class);
             in.putExtra("name", user);
             in.putExtra("email", em);
             in.putExtra("password", pass);
-            startActivity(in);
+            startActivity(in);*/
 
             //so that every field is filled
             if(user.equals("") || em.equals("") || pass.equals("")) {

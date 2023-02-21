@@ -34,19 +34,23 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
-        <androidx.appcompat.widget.SearchView
+        <EditText
             android:id="@+id/searchView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
+            android:hint="Search"
             android:drawableLeft="@drawable/baseline_search_24"
+            android:paddingLeft="5dp"
+            android:paddingTop="13dp"
+            android:paddingBottom="13dp"
             android:singleLine="true"
-            app:queryHint="Search"
             app:flow_firstHorizontalBias="0"
+            app:layout_constraintBottom_toTopOf="@+id/categories"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
-            app:layout_constraintBottom_toTopOf="@+id/categories"/>
+            app:queryHint="Search" />
 
         <TextView
             android:id="@+id/categories"

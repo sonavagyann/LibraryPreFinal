@@ -6,15 +6,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.libraryapplication.databinding.FragmentProfileBinding;
+import com.example.libraryapplication.databinding.FragmentReadBinding;
+
 public class ProfileFragment extends Fragment {
 
-    private TextView username, email, password;
+    DBHelper dbHelper;
+    EditText userName, userEmail, userPass;
     Button logout;
 
     public ProfileFragment(){
@@ -25,19 +30,31 @@ public class ProfileFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        dbHelper = new DBHelper(getActivity());
+
+        //username = (EditText) view.
+
         /*
-        username = username.findViewById(R.id.profusername);
-        email = email.findViewById(R.id.profemail);
-        password = password.findViewById(R.id.profpassword);
+        if(getArguments() != null){
 
-        String user = getActivity().getIntent().getStringExtra("name");
-        String em = getActivity().getIntent().getStringExtra("email");
-        String pass = getActivity().getIntent().getStringExtra("password");
+            Intent getInfo = getActivity().getIntent();
+            String username = getInfo.getStringExtra("username");
+            String email = getInfo.getStringExtra("email");
+            String password = getInfo.getStringExtra("password");
 
-        username.setText(user);
-        email.setText(em);
-        password.setText(pass);*/
-        //if(getArguments() != null){}
+
+            userName = userName.findViewById(R.id.profusername);
+            userName.setText(username);
+            //getActionBar().getTitle(username);
+
+            userEmail = userEmail.findViewById(R.id.profemail);
+            userEmail.setText(email);
+
+            userPass = userPass.findViewById(R.id.profpassword);
+            userPass.setText(password);
+
+        }*/
+
     }
 
     @Nullable
@@ -54,9 +71,12 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+
+
         return view;
 
-    }
 
+
+    }
 
 }

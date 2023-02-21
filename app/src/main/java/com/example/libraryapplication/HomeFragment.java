@@ -2,9 +2,14 @@ package com.example.libraryapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
@@ -24,9 +29,7 @@ public class HomeFragment extends Fragment implements RVInterface, UpdateGenre{
 
     DynamicRVAdapter dynamicRVAdapter;
 
-    StaticRVAdapter staticRVAdapter;
-
-    SearchView searchView;
+    EditText searchView;
 
     int images[] = {R.drawable.and_still_i_rise_cover, R.drawable.call_us_cover,
             R.drawable.catching_fire_cover, R.drawable.forty_days_cover,
@@ -52,12 +55,16 @@ public class HomeFragment extends Fragment implements RVInterface, UpdateGenre{
 
         if(getArguments() != null){
 
+
+
         }
 
         setUpStaticRVModels();
         setUpDynamicRVModels();
 
+
     }
+
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.fragment_home,container,false);
@@ -76,23 +83,44 @@ public class HomeFragment extends Fragment implements RVInterface, UpdateGenre{
         recyclerView2.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
-        /*searchView = searchView.findViewById(R.id.searchView);
-        searchView.setMaxWidth(Integer.MAX_VALUE);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+
+        searchView = (EditText) view.findViewById(R.id.searchView);
+        searchView.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                return true;
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                dynamicRVAdapter.getFilter().filter(newText);
-                return false;
             }
-        });*/
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                filter(editable.toString());
+            }
+
+        });
+
+
+
 
         return view;
+    }
+
+
+    private void filter(String book){
+        ArrayList<DynamicRVModel> filteredList = new ArrayList<>();
+
+        for(DynamicRVModel item : dynamicRVModels){
+            if(item.getTitle().toLowerCase().contains(book.toLowerCase()) || item.getAuthor().toLowerCase().contains(book.toLowerCase())){
+                filteredList.add(item);
+            }
+        }
+
+        dynamicRVAdapter.filterList(filteredList);
     }
 
 
@@ -103,8 +131,6 @@ public class HomeFragment extends Fragment implements RVInterface, UpdateGenre{
             staticRVModels.add(new StaticRVModel(genres[i]));
         }
     }
-
-
 
 
 

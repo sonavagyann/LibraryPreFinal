@@ -8,8 +8,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.widget.AbsListView;
+import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -21,13 +25,12 @@ public class HomeFeedActivity extends AppCompatActivity implements RVInterface, 
 
     ArrayList<StaticRVModel> staticRVModels = new ArrayList<>();
     ArrayList<DynamicRVModel> dynamicRVModels = new ArrayList<>();
-    ArrayList<DynamicRVModel> searchBook;
 
     DynamicRVAdapter dynamicRVAdapter;
     RecyclerView recyclerView;
     RecyclerView recyclerView2;
 
-    SearchView searchView;
+    EditText searchView;
     int[] images = {R.drawable.and_still_i_rise_cover, R.drawable.call_us_cover,
             R.drawable.catching_fire_cover, R.drawable.forty_days_cover,
             R.drawable.hamlet_cover, R.drawable.halfblood_prince_cover,
@@ -52,27 +55,24 @@ public class HomeFeedActivity extends AppCompatActivity implements RVInterface, 
         setUpStaticRVModels();
         setUpDynamicRVModels();
 
-
-
-
-        searchView = findViewById(R.id.searchView);
-        searchView.clearFocus();
-        /*
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchView=findViewById(R.id.searchView);
+        searchView.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                searchBook = new ArrayList<>();
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                return false;
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                //filterList(newText);
-                return true;
-            }
-        });*/
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                filter(editable.toString());
+            }
+
+        });
 
 
         recyclerView = findViewById(R.id.recyclerView);
@@ -86,46 +86,22 @@ public class HomeFeedActivity extends AppCompatActivity implements RVInterface, 
         DynamicRVAdapter dynamicRVAdapter= new DynamicRVAdapter(this, dynamicRVModels, this);
         recyclerView2.setLayoutManager(new LinearLayoutManager(this));
 
-
-        searchView = findViewById(R.id.searchView);
-
-
-        /*
-        searchView.setMaxWidth(Integer.MAX_VALUE);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                searchBook = new ArrayList<>();
-
-                if(query.length()>0){
-                    for (int i = 0; i < dynamicRVModels.size(); i++) {
-                        if(dynamicRVModels.get(i).getTitle().toUpperCase().contains(query.toUpperCase())){
-
-                            DynamicRVModel dynamicModel = new DynamicRVModel();
-                            dynamicModel.setTitle(dynamicRVModels.get(i).getTitle());
-                            dynamicModel.setAuthor(dynamicRVModels.get(i).getAuthor());
-                            dynamicModel.setPages(dynamicRVModels.get(i).getPages());
-                            dynamicModel.setDescriptions(dynamicRVModels.get(i).getDescriptions());
-                            dynamicModel.setImages(dynamicRVModels.get(i).getImages());
-                        }
-                    }
-
-                    DynamicRVAdapter dynamicRVAdapter= new DynamicRVAdapter(HomeFeedActivity.this, searchBook, HomeFeedActivity.this);
-                    recyclerView2.setAdapter(dynamicRVAdapter);
-                    recyclerView2.setLayoutManager(new LinearLayoutManager(HomeFeedActivity.this));
-
-                }
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-
-                dynamicRVAdapter.getFilter().filter(newText);
-                return false;
-            }
-        });*/
     }
+
+
+    private void filter(String book){
+      ArrayList<DynamicRVModel> filteredList = new ArrayList<>();
+
+      for(DynamicRVModel item : dynamicRVModels){
+          if(item.getTitle().toLowerCase().contains(book.toLowerCase()) || item.getAuthor().toLowerCase().contains(book.toLowerCase())){
+              filteredList.add(item);
+          }
+      }
+
+      dynamicRVAdapter.filterList(filteredList);
+    }
+
+
 
     private void setUpStaticRVModels(){
         String[] genres = getResources().getStringArray(R.array.genres);
