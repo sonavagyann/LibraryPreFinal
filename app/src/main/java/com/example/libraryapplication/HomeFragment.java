@@ -8,17 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class HomeFragment extends Fragment implements RVInterface, UpdateGenre{
 
@@ -55,13 +51,10 @@ public class HomeFragment extends Fragment implements RVInterface, UpdateGenre{
 
         if(getArguments() != null){
 
-
-
         }
 
         setUpStaticRVModels();
         setUpDynamicRVModels();
-
 
     }
 
@@ -83,8 +76,6 @@ public class HomeFragment extends Fragment implements RVInterface, UpdateGenre{
         recyclerView2.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
-
-
         searchView = (EditText) view.findViewById(R.id.searchView);
         searchView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -103,9 +94,6 @@ public class HomeFragment extends Fragment implements RVInterface, UpdateGenre{
             }
 
         });
-
-
-
 
         return view;
     }
@@ -133,7 +121,6 @@ public class HomeFragment extends Fragment implements RVInterface, UpdateGenre{
     }
 
 
-
     private void setUpDynamicRVModels() {
         String[] titles = getResources().getStringArray(R.array.books);
         String[] authors = getResources().getStringArray(R.array.authors);
@@ -145,6 +132,7 @@ public class HomeFragment extends Fragment implements RVInterface, UpdateGenre{
                     authors[i], pages[i], images[i], descriptions[i]));
         }
     }
+
 
     @Override
     public void onItemClick(int position) {
@@ -159,6 +147,7 @@ public class HomeFragment extends Fragment implements RVInterface, UpdateGenre{
         startActivity(intent);
     }
 
+
     @Override
     public void showBooks(int position, ArrayList<DynamicRVModel> list) {
 
@@ -166,4 +155,5 @@ public class HomeFragment extends Fragment implements RVInterface, UpdateGenre{
         dynamicRVAdapter.notifyDataSetChanged();
         recyclerView2.setAdapter(dynamicRVAdapter);
     }
+
 }

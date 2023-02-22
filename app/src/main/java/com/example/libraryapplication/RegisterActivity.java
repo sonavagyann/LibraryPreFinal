@@ -1,16 +1,12 @@
 package com.example.libraryapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -36,13 +32,6 @@ public class RegisterActivity extends AppCompatActivity {
             String em = email.getText().toString();
             String pass = password.getText().toString();
             String repass = repassword.getText().toString();
-
-            /*
-            Intent in = new Intent(RegisterActivity.this, PersonalInfoActivity.class);
-            in.putExtra("name", user);
-            in.putExtra("email", em);
-            in.putExtra("password", pass);
-            startActivity(in);*/
 
             //so that every field is filled
             if(user.equals("") || em.equals("") || pass.equals("")) {

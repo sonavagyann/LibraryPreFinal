@@ -1,26 +1,17 @@
 package com.example.libraryapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.widget.AbsListView;
 import android.widget.EditText;
-import android.widget.HorizontalScrollView;
-import android.widget.ImageView;
-import android.widget.Toast;
-
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+
 public class HomeFeedActivity extends AppCompatActivity implements RVInterface, UpdateGenre{
 
     ArrayList<StaticRVModel> staticRVModels = new ArrayList<>();
@@ -102,7 +93,6 @@ public class HomeFeedActivity extends AppCompatActivity implements RVInterface, 
     }
 
 
-
     private void setUpStaticRVModels(){
         String[] genres = getResources().getStringArray(R.array.genres);
 
@@ -123,10 +113,6 @@ public class HomeFeedActivity extends AppCompatActivity implements RVInterface, 
                     authors[i], pages[i], images[i], descriptions[i]));
         }
     }
-
-
-
-
 
 
     @Override

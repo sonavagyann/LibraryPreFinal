@@ -5,15 +5,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
-import java.util.List;
-
 
 public class DynamicRVAdapter extends RecyclerView.Adapter<DynamicRVAdapter.MyViewHolder>{
 
@@ -40,7 +36,6 @@ public class DynamicRVAdapter extends RecyclerView.Adapter<DynamicRVAdapter.MyVi
         this.context=context;
         this.dynamicRVModels = dynamicRVModels;
         this.dynamicRVModels=dynamicRVModels;
-        //this.dynamicRVModels = new ArrayList<>(dynamicRVModelsFilter);
         this.rvInterface=rvInterface;
 
     }
@@ -49,7 +44,6 @@ public class DynamicRVAdapter extends RecyclerView.Adapter<DynamicRVAdapter.MyVi
     @NonNull
     @Override
     public DynamicRVAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        //LayoutInflater inflater = LayoutInflater.from(context);
         View view =LayoutInflater.from(parent.getContext()).inflate(R.layout.dynamic_rv_item_layout, parent, false);
         return new DynamicRVAdapter.MyViewHolder(view, rvInterface);
     }

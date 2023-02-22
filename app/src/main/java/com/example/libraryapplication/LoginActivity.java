@@ -1,24 +1,18 @@
 package com.example.libraryapplication;
 
-
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.libraryapplication.databinding.ActivityMainBinding;
-
 
 public class LoginActivity extends AppCompatActivity {
 
-    //ActivityMainBinding binding;
+    SharedPreferences sharedPreferences;
 
     EditText username, email, password;
     Button signinbutton;
@@ -27,7 +21,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(R.layout.signin);
 
         username = (EditText) findViewById(R.id.username1);
@@ -36,13 +29,21 @@ public class LoginActivity extends AppCompatActivity {
         signinbutton = (Button) findViewById(R.id.signinbutton);
         DB = new DBHelper(this);
 
+        sharedPreferences = getSharedPreferences("UserPref", Context.MODE_PRIVATE);
+
         signinbutton.setOnClickListener(v -> {
 
             String user = username.getText().toString();
             String em = email.getText().toString();
             String pass = password.getText().toString();
 
-            sendInfo();
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("userName", user);
+            editor.putString("userEmail", em);
+            editor.putString("userPass", pass);
+            editor.commit();
+
+
             //if at least one string is empty
             if(user.equals("") || email.equals("") || pass.equals("")) {
                 Toast.makeText(LoginActivity.this, "Fill all the fields", Toast.LENGTH_SHORT).show();
@@ -56,26 +57,12 @@ public class LoginActivity extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                     startActivity(intent);
 
-                    //sendInfo();
-
                 }
                 else{
                     Toast.makeText(LoginActivity.this, "Some inputs do not match", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-    }
-
-
-    public void sendInfo() {
-
-        Intent in;
-        in= new Intent(LoginActivity.this, LogoutActivity.class);
-        in.putExtra("username", String.valueOf(username));
-        in.putExtra("email", String.valueOf(email));
-        in.putExtra("password", String.valueOf(password));
-        startActivity(in);
-
     }
 
 }

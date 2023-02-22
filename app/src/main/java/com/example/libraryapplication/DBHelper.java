@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import androidx.annotation.Nullable;
-
 public class DBHelper extends SQLiteOpenHelper {
 
     public static final String DBName = "Signin.db";
@@ -29,6 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public boolean DataInsert(String username, String email, String password) {
         SQLiteDatabase MyDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+
         contentValues.put("username", username);
         contentValues.put("email", email);
         contentValues.put("password", password);

@@ -2,8 +2,6 @@ package com.example.libraryapplication;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +14,6 @@ import java.util.ArrayList;
 public class StaticRVAdapter extends RecyclerView.Adapter<StaticRVAdapter.MyViewHolder>{
 
     UpdateGenre updateGenre;
-    //Context context;
     Activity activity;
     ArrayList<StaticRVModel> staticRVModels;
 
@@ -24,10 +21,8 @@ public class StaticRVAdapter extends RecyclerView.Adapter<StaticRVAdapter.MyView
     boolean select = true;
     int genre_index = -1;
 
-    //public StaticRVAdapter(UpdateGenre updateGenre, Context context, ArrayList<StaticRVModel> staticRVModels) {
     public StaticRVAdapter(UpdateGenre updateGenre, Activity activity, ArrayList<StaticRVModel> staticRVModels) {
         this.updateGenre=updateGenre;
-        //this.context=context;
         this.activity=activity;
         this.staticRVModels=staticRVModels;
     }
@@ -35,9 +30,6 @@ public class StaticRVAdapter extends RecyclerView.Adapter<StaticRVAdapter.MyView
     @NonNull
     @Override
     public StaticRVAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        //LayoutInflater inflater = LayoutInflater.from(context);
-        //View view = inflater.inflate(R.layout.static_rv_item, parent, false);
-        //return new StaticRVAdapter.MyViewHolder(view);
         return new StaticRVAdapter.MyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.static_rv_item, parent, false));
     }
 
