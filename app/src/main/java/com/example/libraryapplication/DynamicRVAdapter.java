@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
@@ -15,26 +17,15 @@ public class DynamicRVAdapter extends RecyclerView.Adapter<DynamicRVAdapter.MyVi
 
     private RVInterface rvInterface;
     Context context;
+    private View.OnClickListener listener;
     ArrayList<DynamicRVModel> dynamicRVModels;
 
-    private IClickAddFavListener iClickAddFavListener;
-
-    public interface IClickAddFavListener {
-        void onClickAddFav(ImageView addFavImg, DynamicRVModel dynamicRVModel);
-    }
-
-
-    public void setData(ArrayList<DynamicRVModel> list, IClickAddFavListener listener){
-        this.dynamicRVModels = list;
-        this.iClickAddFavListener = listener;
-        notifyDataSetChanged();
-    }
+    ArrayList<DynamicRVModel> readList;
 
 
 
     public  DynamicRVAdapter(Context context, ArrayList<DynamicRVModel> dynamicRVModels, RVInterface rvInterface){
         this.context=context;
-        this.dynamicRVModels = dynamicRVModels;
         this.dynamicRVModels=dynamicRVModels;
         this.rvInterface=rvInterface;
 
@@ -55,7 +46,22 @@ public class DynamicRVAdapter extends RecyclerView.Adapter<DynamicRVAdapter.MyVi
         holder.author.setText(dynamicRVModels.get(position).getAuthor());
         holder.pages.setText(dynamicRVModels.get(position).getPages());
         holder.myImage.setImageResource(dynamicRVModels.get(position).getImages());
+        holder.addFavImg.setImageResource(R.drawable.add_favorite);
+        holder.addFavImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), "Clicked", Toast.LENGTH_SHORT).show();
 
+            }
+        });
+
+        holder.addReadImg.setImageResource(R.drawable.baseline_add_24);
+        holder.addReadImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), "Clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -68,11 +74,16 @@ public class DynamicRVAdapter extends RecyclerView.Adapter<DynamicRVAdapter.MyVi
         notifyDataSetChanged();
     }
 
+    public interface OnItemClickListener {
+
+        void onItemClick(int position);
+    }
+
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
         TextView title, author, pages;
-        ImageView myImage, addFavImg;
+        ImageView myImage, addFavImg, addReadImg;
         public MyViewHolder(@NonNull View itemView, RVInterface rvInterface) {
             super(itemView);
             title = itemView.findViewById(R.id.book_title);
@@ -80,6 +91,7 @@ public class DynamicRVAdapter extends RecyclerView.Adapter<DynamicRVAdapter.MyVi
             pages = itemView.findViewById(R.id.book_pages);
             myImage = itemView.findViewById(R.id.book_cover);
             addFavImg = itemView.findViewById(R.id.addToFav);
+            addReadImg = itemView.findViewById(R.id.addToRead);
 
 
             itemView.setOnClickListener(view -> {

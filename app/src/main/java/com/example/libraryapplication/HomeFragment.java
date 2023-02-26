@@ -1,5 +1,6 @@
 package com.example.libraryapplication;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -8,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -59,6 +62,7 @@ public class HomeFragment extends Fragment implements RVInterface, UpdateGenre{
     }
 
 
+    @SuppressLint("MissingInflatedId")
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.fragment_home,container,false);
 
@@ -121,16 +125,21 @@ public class HomeFragment extends Fragment implements RVInterface, UpdateGenre{
     }
 
 
-    private void setUpDynamicRVModels() {
+    private void setUpDynamicRVModels(){
+
+
         String[] titles = getResources().getStringArray(R.array.books);
         String[] authors = getResources().getStringArray(R.array.authors);
         String[] pages = getResources().getStringArray(R.array.pages);
         String[] descriptions = getResources().getStringArray(R.array.descriptions);
 
-        for (int i = 0; i < titles.length; i++) {
+        for(int i = 0; i<titles.length; i++){
             dynamicRVModels.add(new DynamicRVModel(titles[i],
                     authors[i], pages[i], images[i], descriptions[i]));
+
+
         }
+
     }
 
 
@@ -145,6 +154,12 @@ public class HomeFragment extends Fragment implements RVInterface, UpdateGenre{
         intent.putExtra("Image", dynamicRVModels.get(position).getImages());
 
         startActivity(intent);
+
+        /*
+        DynamicRVModel item = dynamicRVModels.get(position);
+        Intent in = new Intent(this, FavoritesFragment.class);
+        in.putExtra("item", (CharSequence) item);
+        startActivity(in);*/
     }
 
 

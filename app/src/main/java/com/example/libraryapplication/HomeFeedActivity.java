@@ -9,10 +9,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 
-public class HomeFeedActivity extends AppCompatActivity implements RVInterface, UpdateGenre{
+public class HomeFeedActivity extends AppCompatActivity implements RVInterface, UpdateGenre, DynamicRVAdapter.OnItemClickListener{
 
     ArrayList<StaticRVModel> staticRVModels = new ArrayList<>();
     ArrayList<DynamicRVModel> dynamicRVModels = new ArrayList<>();
@@ -36,7 +40,7 @@ public class HomeFeedActivity extends AppCompatActivity implements RVInterface, 
             R.drawable.vardanank_cover, R.drawable.nineteen_eighty_four_cover};
 
 
-    @SuppressLint("WrongViewCast")
+    @SuppressLint({"WrongViewCast", "MissingInflatedId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,10 +79,20 @@ public class HomeFeedActivity extends AppCompatActivity implements RVInterface, 
         recyclerView.setLayoutManager(layoutManager);
 
         DynamicRVAdapter dynamicRVAdapter= new DynamicRVAdapter(this, dynamicRVModels, this);
+        recyclerView2.setAdapter(dynamicRVAdapter);
         recyclerView2.setLayoutManager(new LinearLayoutManager(this));
 
     }
 
+    /*
+    @Override
+    public void onItemClick(int position) {
+        DynamicRVModel dynamicRVModel = dynamicRVModels.get(position);
+        Intent intent = new Intent(this, FavoritesFragment.class);
+        intent.putExtra("item", (CharSequence) dynamicRVModel);
+        startActivity(intent);
+    }
+    */
 
     private void filter(String book){
       ArrayList<DynamicRVModel> filteredList = new ArrayList<>();
@@ -103,6 +117,8 @@ public class HomeFeedActivity extends AppCompatActivity implements RVInterface, 
 
 
     private void setUpDynamicRVModels(){
+
+
         String[] titles = getResources().getStringArray(R.array.books);
         String[] authors = getResources().getStringArray(R.array.authors);
         String[] pages = getResources().getStringArray(R.array.pages);
@@ -111,6 +127,8 @@ public class HomeFeedActivity extends AppCompatActivity implements RVInterface, 
         for(int i = 0; i<titles.length; i++){
             dynamicRVModels.add(new DynamicRVModel(titles[i],
                     authors[i], pages[i], images[i], descriptions[i]));
+
+
         }
     }
 
@@ -126,6 +144,12 @@ public class HomeFeedActivity extends AppCompatActivity implements RVInterface, 
         intent.putExtra("Image", dynamicRVModels.get(position).getImages());
 
         startActivity(intent);
+
+        /*
+        DynamicRVModel item = dynamicRVModels.get(position);
+        Intent in = new Intent(this, FavoritesFragment.class);
+        in.putExtra("item", (CharSequence) item);
+        startActivity(in);*/
     }
 
 
@@ -135,4 +159,5 @@ public class HomeFeedActivity extends AppCompatActivity implements RVInterface, 
         dynamicRVAdapter.notifyDataSetChanged();
         recyclerView2.setAdapter(dynamicRVAdapter);
     }
+
 }
