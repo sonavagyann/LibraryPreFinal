@@ -1,5 +1,5 @@
 package com.example.libraryapplication;
 
-public interface RVInterface {
+public interface OnBookClickListener {
     void onItemClick(int position);
 }

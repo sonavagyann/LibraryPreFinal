@@ -6,7 +6,10 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class BooksActivity extends AppCompatActivity {
+import coil.Coil;
+import coil.request.ImageRequest;
+
+public class BookActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +20,7 @@ public class BooksActivity extends AppCompatActivity {
         String author = getIntent().getStringExtra("Author");
         String pages = getIntent().getStringExtra("Pages");
         String description = getIntent().getStringExtra("Description");
-        int image = getIntent().getIntExtra("Image", 0);
+        String imageLink = getIntent().getStringExtra("Image");
 
         TextView book_name = findViewById(R.id.book_title);
         TextView book_author = findViewById(R.id.book_author);
@@ -29,6 +32,7 @@ public class BooksActivity extends AppCompatActivity {
         book_author.setText(author);
         book_pages.setText(pages);
         book_description.setText(description);
-        book_cover.setImageResource(image);
+        ImageRequest request = new ImageRequest.Builder(this).data(imageLink).target(book_cover).build();
+        Coil.imageLoader(this).enqueue(request);
     }
 }
