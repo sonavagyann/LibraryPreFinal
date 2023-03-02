@@ -1,3 +1,4 @@
+/*
 package com.example.libraryapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,13 +15,18 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 
 public class HomeFeedActivity extends AppCompatActivity implements RVInterface, UpdateGenre, DynamicRVAdapter.OnItemClickListener{
 
     ArrayList<StaticRVModel> staticRVModels = new ArrayList<>();
     ArrayList<DynamicRVModel> dynamicRVModels = new ArrayList<>();
+    //ArrayList<DynamicRVModel> dynamicRVModels;
 
+    //DatabaseReference database;
     DynamicRVAdapter dynamicRVAdapter;
     RecyclerView recyclerView;
     RecyclerView recyclerView2;
@@ -72,6 +78,32 @@ public class HomeFeedActivity extends AppCompatActivity implements RVInterface, 
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView2 = findViewById(R.id.recyclerView2);
+        //database = FirebaseDatabase.getInstance().getReference("Books");
+        //recyclerView2.setHasFixedSize(true);
+
+        //dynamicRVModels = new ArrayList<>();
+
+        /*
+        database.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for(DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    DynamicRVModel model = dataSnapshot.getValue(DynamicRVModel.class);
+                    dynamicRVModels.add(model);
+                }
+                dynamicRVAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        */
+
+/*
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         StaticRVAdapter staticRVAdapter = new StaticRVAdapter((UpdateGenre) this,getParent(),staticRVModels);
@@ -94,6 +126,7 @@ public class HomeFeedActivity extends AppCompatActivity implements RVInterface, 
     }
     */
 
+/*
     private void filter(String book){
       ArrayList<DynamicRVModel> filteredList = new ArrayList<>();
 
@@ -116,8 +149,8 @@ public class HomeFeedActivity extends AppCompatActivity implements RVInterface, 
     }
 
 
-    private void setUpDynamicRVModels(){
 
+    private void setUpDynamicRVModels(){
 
         String[] titles = getResources().getStringArray(R.array.books);
         String[] authors = getResources().getStringArray(R.array.authors);
@@ -127,10 +160,9 @@ public class HomeFeedActivity extends AppCompatActivity implements RVInterface, 
         for(int i = 0; i<titles.length; i++){
             dynamicRVModels.add(new DynamicRVModel(titles[i],
                     authors[i], pages[i], images[i], descriptions[i]));
-
-
         }
     }
+
 
 
     @Override
@@ -150,8 +182,9 @@ public class HomeFeedActivity extends AppCompatActivity implements RVInterface, 
         Intent in = new Intent(this, FavoritesFragment.class);
         in.putExtra("item", (CharSequence) item);
         startActivity(in);*/
-    }
+    //}
 
+/*
 
     @Override
     public void showBooks(int position, ArrayList<DynamicRVModel> list) {
@@ -161,3 +194,4 @@ public class HomeFeedActivity extends AppCompatActivity implements RVInterface, 
     }
 
 }
+*/

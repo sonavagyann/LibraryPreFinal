@@ -43,7 +43,7 @@
             android:paddingStart="15dp"
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
-            android:text="Books you have liked"
+            android:text="Books you have booked"
             android:textColor="#808588"
             android:textSize="18sp"
             android:textStyle="bold"

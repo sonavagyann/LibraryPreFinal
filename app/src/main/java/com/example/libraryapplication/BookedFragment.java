@@ -17,7 +17,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FavoritesFragment extends Fragment {
+public class BookedFragment extends Fragment {
 
     ArrayList<DynamicRVModel> dynamicRVModels = new ArrayList<>();
     DynamicRVAdapter dynamicRVAdapter;
@@ -25,13 +25,13 @@ public class FavoritesFragment extends Fragment {
 
 
     //private HomeFeedActivity homeFeedActivity;
-    public FavoritesFragment(){
+    public BookedFragment(){
 
     }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_favorites,container,false);
+        View view = inflater.inflate(R.layout.fragment_booked,container,false);
 
 
         /*

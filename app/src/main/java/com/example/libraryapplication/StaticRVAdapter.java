@@ -38,6 +38,7 @@ public class StaticRVAdapter extends RecyclerView.Adapter<StaticRVAdapter.MyView
         holder.text.setText(staticRVModels.get(position).getGenres());
 
         if(flag) {
+
             ArrayList<DynamicRVModel> dynamicRVModels = new ArrayList<>();
             dynamicRVModels.add(new DynamicRVModel("And Still I Rise", "Maya Angelou", "64", R.drawable.and_still_i_rise_cover, "The book is primarily about self-respect and confidence. In the poem, Angelou reveals how she will overcome anything through her\n" +
                     "self-esteem. She shows how nothing can get her down. She will rise to any occasion, and nothing, not even her skin color, will hold her back.."));
@@ -120,6 +121,7 @@ public class StaticRVAdapter extends RecyclerView.Adapter<StaticRVAdapter.MyView
                     //All
                     if(position == 0){
                         ArrayList<DynamicRVModel> dynamicRVModels = new ArrayList<>();
+
                         dynamicRVModels.add(new DynamicRVModel("And Still I Rise", "Maya Angelou", "64", R.drawable.and_still_i_rise_cover, "The book is primarily about self-respect and confidence. In the poem, Angelou reveals how she will overcome anything through her\n" +
                                 "self-esteem. She shows how nothing can get her down. She will rise to any occasion, and nothing, not even her skin color, will hold her back.."));
                         dynamicRVModels.add(new DynamicRVModel("Call Us What We Carry", "Amanda Gorman", "240", R.drawable.call_us_cover, "In Call Us What We Carry, Gorman explores history, language, identity, and erasure through an imaginative and intimate\n" +
@@ -186,6 +188,8 @@ public class StaticRVAdapter extends RecyclerView.Adapter<StaticRVAdapter.MyView
                                 "faith that the Armenians went through."));
                         dynamicRVModels.add(new DynamicRVModel("1984", "George Orwell", "328", R.drawable.nineteen_eighty_four_cover, "In George Orwells 1984, Winston Smith wrestles with oppression in Oceania, a place where the Party scrutinizes human actions with\n" +
                                 "ever-watchful Big Brother. Defying a ban on individuality, Winston dares to express his thoughts in a diary and pursues a relationship with Julia."));
+
+
 
                         updateGenre.showBooks(position, dynamicRVModels);
                     }

@@ -2,10 +2,13 @@ package com.example.libraryapplication;
 
 public class DynamicRVModel {
 
+    //+String genres
     String title, author, pages, descriptions;
     int images;
 
+    //+String genres
     public DynamicRVModel(String title, String author, String pages, int images, String descriptions) {
+        //this.genres = genres;
         this.title = title;
         this.author = author;
         this.pages = pages;
@@ -13,6 +16,7 @@ public class DynamicRVModel {
         this.descriptions=descriptions;
     }
 
+    //public String getGenres(){return genres;}
     public String getTitle() {
         return title;
     }

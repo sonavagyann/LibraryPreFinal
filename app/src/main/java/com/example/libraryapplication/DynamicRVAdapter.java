@@ -11,12 +11,18 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+
 import java.util.ArrayList;
 
-public class DynamicRVAdapter extends RecyclerView.Adapter<DynamicRVAdapter.MyViewHolder>{
+public class DynamicRVAdapter extends RecyclerView.Adapter<DynamicRVAdapter.MyViewHolder> {
 
     private RVInterface rvInterface;
+
     Context context;
+
     private View.OnClickListener listener;
     ArrayList<DynamicRVModel> dynamicRVModels;
 
@@ -25,6 +31,7 @@ public class DynamicRVAdapter extends RecyclerView.Adapter<DynamicRVAdapter.MyVi
 
 
     public  DynamicRVAdapter(Context context, ArrayList<DynamicRVModel> dynamicRVModels, RVInterface rvInterface){
+
         this.context=context;
         this.dynamicRVModels=dynamicRVModels;
         this.rvInterface=rvInterface;
@@ -42,6 +49,8 @@ public class DynamicRVAdapter extends RecyclerView.Adapter<DynamicRVAdapter.MyVi
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
+
+        //holder.genres.setText(dynamicRVModels.get(position).getGenres());
         holder.title.setText(dynamicRVModels.get(position).getTitle());
         holder.author.setText(dynamicRVModels.get(position).getAuthor());
         holder.pages.setText(dynamicRVModels.get(position).getPages());
@@ -64,6 +73,7 @@ public class DynamicRVAdapter extends RecyclerView.Adapter<DynamicRVAdapter.MyVi
         });
     }
 
+
     @Override
     public int getItemCount() {
         return dynamicRVModels.size();
@@ -82,10 +92,11 @@ public class DynamicRVAdapter extends RecyclerView.Adapter<DynamicRVAdapter.MyVi
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        TextView title, author, pages;
+        TextView genres, title, author, pages;
         ImageView myImage, addFavImg, addReadImg;
         public MyViewHolder(@NonNull View itemView, RVInterface rvInterface) {
             super(itemView);
+
             title = itemView.findViewById(R.id.book_title);
             author = itemView.findViewById(R.id.book_author);
             pages = itemView.findViewById(R.id.book_pages);
@@ -104,5 +115,6 @@ public class DynamicRVAdapter extends RecyclerView.Adapter<DynamicRVAdapter.MyVi
                 }
             });
         }
+
     }
 }

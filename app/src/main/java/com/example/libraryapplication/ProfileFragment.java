@@ -35,16 +35,14 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        userN = view.findViewById(R.id.profusername);
         userE = view.findViewById(R.id.profemail);
         userP = view.findViewById(R.id.profpassword);
 
         SharedPreferences sharedPreferences = getActivity().getApplicationContext().getSharedPreferences("UserPref", Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString("userName", "");
-        String email = sharedPreferences.getString("userEmail", "");
-        String password = sharedPreferences.getString("userPass", "");
+        String username = sharedPreferences.getString("name", "");
+        String email = sharedPreferences.getString("email", "");
+        String password = sharedPreferences.getString("password", "");
 
-        userN.setText(username);
         userE.setText(email);
         userP.setText(password);
 

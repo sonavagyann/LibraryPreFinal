@@ -17,6 +17,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 
 public class HomeFragment extends Fragment implements RVInterface, UpdateGenre{
@@ -26,9 +36,15 @@ public class HomeFragment extends Fragment implements RVInterface, UpdateGenre{
     RecyclerView recyclerView;
     RecyclerView recyclerView2;
 
+    private DatabaseReference dataReference;
+
+    private FirebaseAuth mAuth;
+    private String currentBookTitle;
+
     DynamicRVAdapter dynamicRVAdapter;
 
     EditText searchView;
+
 
     int images[] = {R.drawable.and_still_i_rise_cover, R.drawable.call_us_cover,
             R.drawable.catching_fire_cover, R.drawable.forty_days_cover,
@@ -42,6 +58,7 @@ public class HomeFragment extends Fragment implements RVInterface, UpdateGenre{
             R.drawable.gatsby_cover, R.drawable.the_hound_cover,
             R.drawable.hunger_games_cover, R.drawable.the_sun_and_her_flowers_cover,
             R.drawable.vardanank_cover, R.drawable.nineteen_eighty_four_cover};
+
 
     public HomeFragment(){
 
@@ -66,8 +83,24 @@ public class HomeFragment extends Fragment implements RVInterface, UpdateGenre{
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.fragment_home,container,false);
 
+
+        for(int i=0; i<10; i++){
+            Book title = new Book();
+        }
+
+
+
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView2 =  view.findViewById(R.id.recyclerView2);
+
+        mAuth = FirebaseAuth.getInstance();
+        currentBookTitle = mAuth.getCurrentUser().getUid();
+        dataReference = FirebaseDatabase.getInstance().getReference().child("Books").child(currentBookTitle);
+
+        //recyclerView2.setHasFixedSize(true);
+
+        //dynamicRVModels = new ArrayList<>();
+
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         StaticRVAdapter staticRVAdapter = new StaticRVAdapter(this, getActivity(), staticRVModels);
@@ -102,6 +135,15 @@ public class HomeFragment extends Fragment implements RVInterface, UpdateGenre{
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<DynamicRVModel>().setQuery(dataReference, DynamicRVModel.class).build();
+
+        //FirebaseRecyclerAdapter<DynamicRVModel>
+    }
+
 
     private void filter(String book){
         ArrayList<DynamicRVModel> filteredList = new ArrayList<>();
@@ -127,7 +169,6 @@ public class HomeFragment extends Fragment implements RVInterface, UpdateGenre{
 
     private void setUpDynamicRVModels(){
 
-
         String[] titles = getResources().getStringArray(R.array.books);
         String[] authors = getResources().getStringArray(R.array.authors);
         String[] pages = getResources().getStringArray(R.array.pages);
@@ -136,7 +177,6 @@ public class HomeFragment extends Fragment implements RVInterface, UpdateGenre{
         for(int i = 0; i<titles.length; i++){
             dynamicRVModels.add(new DynamicRVModel(titles[i],
                     authors[i], pages[i], images[i], descriptions[i]));
-
 
         }
 
@@ -155,17 +195,12 @@ public class HomeFragment extends Fragment implements RVInterface, UpdateGenre{
 
         startActivity(intent);
 
-        /*
-        DynamicRVModel item = dynamicRVModels.get(position);
-        Intent in = new Intent(this, FavoritesFragment.class);
-        in.putExtra("item", (CharSequence) item);
-        startActivity(in);*/
     }
 
 
     @Override
     public void showBooks(int position, ArrayList<DynamicRVModel> list) {
-
+        
         dynamicRVAdapter = new DynamicRVAdapter(getContext(), list, this);
         dynamicRVAdapter.notifyDataSetChanged();
         recyclerView2.setAdapter(dynamicRVAdapter);
