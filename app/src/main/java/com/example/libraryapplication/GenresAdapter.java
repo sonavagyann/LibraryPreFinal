@@ -1,7 +1,6 @@
 package com.example.libraryapplication;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-import java.util.ArrayList;
 
 public class GenresAdapter extends RecyclerView.Adapter<GenresAdapter.MyViewHolder>{
 
@@ -27,7 +25,7 @@ public class GenresAdapter extends RecyclerView.Adapter<GenresAdapter.MyViewHold
     @NonNull
     @Override
     public GenresAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new GenresAdapter.MyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.static_rv_item, parent, false));
+        return new GenresAdapter.MyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.genre_display_layout, parent, false));
     }
 
     @Override

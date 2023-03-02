@@ -1,10 +1,13 @@
 package com.example.libraryapplication;
 
+import static android.content.ContentValues.TAG;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +20,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class HomeFragment extends Fragment implements OnTabChangeListener {
+public class HomeFragment extends Fragment {
 
     String[] genres;
     ArrayList<Book> books = new ArrayList<>();
@@ -46,6 +54,7 @@ public class HomeFragment extends Fragment implements OnTabChangeListener {
         super.onViewCreated(view, savedInstanceState);
 
         recyclerView = view.findViewById(R.id.recyclerView);
+
         recyclerView2 = view.findViewById(R.id.recyclerView2);
         recyclerView2.setHasFixedSize(true);
         recyclerView.setHasFixedSize(true);
@@ -55,12 +64,8 @@ public class HomeFragment extends Fragment implements OnTabChangeListener {
 
         genres = getResources().getStringArray(R.array.genres);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        GenresAdapter genresAdapter = new GenresAdapter(getContext(), genres, new OnTabChangeListener() {
-            @Override
-            public void onTabChange(int position) {
-                filterByGenre(position);
-            }
-        });
+        GenresAdapter genresAdapter = new GenresAdapter(getContext(), genres, position -> filterByGenre(position));
+
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(genresAdapter);
 
@@ -110,18 +115,19 @@ public class HomeFragment extends Fragment implements OnTabChangeListener {
     private void filterByGenre(int position) {
         ArrayList<Book> filteredList = new ArrayList<>();
 
-        if(position==0){
+        if (position == 0) {
             filteredList = books;
-        }
-        else{
+        } else {
             String genre = genres[position];
             for (Book item : books) {
-                if (item.getGenre().toLowerCase().equals(genre)){
+                System.out.println(item.genre + " - " + genre);
+                if (item.getGenre().equalsIgnoreCase(genre)) {
                     filteredList.add(item);
                 }
             }
         }
-        booksAdapter.filterList(filteredList);
+        booksAdapter.setBooks(filteredList);
+
     }
 
     private void filterByKeyword(String book) {
@@ -132,26 +138,18 @@ public class HomeFragment extends Fragment implements OnTabChangeListener {
                 filteredList.add(item);
             }
         }
-
-        booksAdapter.filterList(filteredList);
+        booksAdapter.setBooks(filteredList);
     }
 
-    private void onBookClick(int position) {
-        Book book = books.get(position);
+    private void onBookClick(Book book) {
         Intent intent = new Intent(getContext(), BookActivity.class);
 
         intent.putExtra("Name", book.getTitle());
         intent.putExtra("Author", book.getAuthor());
         intent.putExtra("Pages", book.getPages());
-        intent.putExtra("Description", book.getDescriptions());
+        intent.putExtra("Description", book.getDescription());
         intent.putExtra("Image", book.getImageLink());
 
         startActivity(intent);
-
-    }
-
-    @Override
-    public void onTabChange(int position) {
-
     }
 }

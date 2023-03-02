@@ -1,7 +1,7 @@
 package com.example.libraryapplication;
 
 public class Book {
-    String genre, title, author, pages, descriptions, imageLink;
+    String genre, title, author, pages, description, imageLink;
     public Book(){}
 
     public Book(String genre, String title, String author, String pages, String imageLink, String descriptions) {
@@ -10,7 +10,7 @@ public class Book {
         this.author = author;
         this.pages = pages;
         this.imageLink = imageLink;
-        this.descriptions=descriptions;
+        this.description =descriptions;
     }
 
     public String getGenre(){return genre;}
@@ -30,6 +30,6 @@ public class Book {
         return imageLink;
     }
 
-    public String getDescriptions(){ return descriptions;}
+    public String getDescription(){ return description;}
 
 }

@@ -22,7 +22,7 @@ import coil.request.ImageRequest;
 public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder> {
     private Context context;
     private OnBookClickListener listener;
-    private List<Book> books;
+    private List<Book> books = new ArrayList<>();
 
     public BooksAdapter(Context context, OnBookClickListener listener){
         this.context=context;
@@ -32,7 +32,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
     @NonNull
     @Override
     public BooksAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view =LayoutInflater.from(parent.getContext()).inflate(R.layout.dynamic_rv_item_layout, parent, false);
+        View view =LayoutInflater.from(parent.getContext()).inflate(R.layout.book_display_layout, parent, false);
         return new BooksAdapter.MyViewHolder(view);
     }
 
@@ -41,14 +41,14 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
         Book book = books.get(position);
         holder.title.setText(book.getTitle());
         holder.author.setText(book.getAuthor());
-        holder.pages.setText(book.getPages());
+        //holder.pages.setText(book.getPages());
         ImageRequest request = new ImageRequest.Builder(context).data(book.getImageLink()).target(holder.myImage).build();
         Coil.imageLoader(context).enqueue(request);
-        holder.addFavImg.setImageResource(R.drawable.add_favorite);
+        holder.addFavImg.setImageResource(R.drawable.baseline_access_time_24);
         holder.addFavImg.setOnClickListener(view -> Toast.makeText(view.getContext(), "Clicked", Toast.LENGTH_SHORT).show());
         holder.addReadImg.setImageResource(R.drawable.baseline_add_24);
         holder.addReadImg.setOnClickListener(view -> Toast.makeText(view.getContext(), "Clicked", Toast.LENGTH_SHORT).show());
-        holder.itemView.setOnClickListener(view -> listener.onItemClick(position));
+        holder.itemView.setOnClickListener(view -> listener.onItemClick(book));
     }
 
     @Override
@@ -56,19 +56,15 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
         return books.size();
     }
 
-    public void filterList(ArrayList<Book> filteredList){
-        books = filteredList;
-        notifyDataSetChanged();
-    }
-
     public void setBooks(List<Book> books) {
-        this.books = books;
+        this.books.clear();
+        this.books.addAll(books);
         notifyDataSetChanged();
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        TextView genres, title, author, pages;
+        TextView title, author, pages;
         ImageView myImage, addFavImg, addReadImg;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
