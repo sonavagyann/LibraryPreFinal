@@ -18,16 +18,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.rpc.context.AttributeContext;
 
 public class LoginActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
-
     EditText email, password;
     Button signinbutton;
-
     ProgressDialog progressDialog;
-
     FirebaseAuth mAuth;
     FirebaseUser mUser;
 
@@ -103,5 +101,16 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
         //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+    //No need to log in every time you open the app
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(mAuth.getCurrentUser() != null){
+            Toast.makeText(this, "You are logged in", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+            finish();
+        }
     }
 }
