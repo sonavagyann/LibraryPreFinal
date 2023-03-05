@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    EditText username, email, password, repassword;
+    EditText email, password, repassword;
     Button regbutton;
     ProgressDialog progressDialog;
 
@@ -34,7 +34,6 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.signup);
         //mAuth = FirebaseAuth.getInstance();
 
-        username = (EditText) findViewById(R.id.username);
         email = (EditText) findViewById(R.id.email);
         password = (EditText) findViewById(R.id.password);
         repassword = (EditText) findViewById(R.id.repassword);
@@ -54,18 +53,14 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void PerformAuth() {
 
-        String name = username.getText().toString();
         String em = email.getText().toString();
         String pass = password.getText().toString();
         String repass = regbutton.getText().toString();
 
 
-        if(name.equals("") || em.equals("") || pass.equals("")) {
+        if(em.equals("") || pass.equals("")) {
             Toast.makeText(RegisterActivity.this, "Fill all the fields", Toast.LENGTH_SHORT).show();
         }
-        //else if (!em.matches(emailPattern)) {
-            //Toast.makeText(this, "Enter proper email", Toast.LENGTH_SHORT).show();
-        //}
         else if(pass.equals(repass)){
             Toast.makeText(RegisterActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
         }
@@ -83,8 +78,8 @@ public class RegisterActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
                                     progressDialog.dismiss();
-                                    sendUserToNextActivity();
                                     Toast.makeText(RegisterActivity.this, "Verify your email", Toast.LENGTH_SHORT).show();
+                                    sendUserToNextActivity();
                                 }
                                 else{
                                     progressDialog.dismiss();

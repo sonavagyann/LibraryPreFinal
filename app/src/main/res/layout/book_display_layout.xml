@@ -51,33 +51,32 @@
 
         <TextView
             android:id="@+id/book_title"
-            android:layout_width="289dp"
-            android:layout_height="wrap_content"
+            android:layout_width="276dp"
+            android:layout_height="52dp"
             android:gravity="right"
             android:text="The Hunger Games"
-            android:textColor="@color/black"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.868"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.114" />
-
-
-        <TextView
-            android:id="@+id/book_author"
-            android:layout_width="289dp"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:text="Susan Collins"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.868"
+            app:layout_constraintHorizontal_bias="0.909"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.047" />
+
+        <TextView
+            android:id="@+id/book_author"
+            android:layout_width="276dp"
+            android:layout_height="32dp"
+            android:gravity="right"
+            android:text="Susan Collins"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.9"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.503" />
@@ -90,8 +89,8 @@
             android:background="@drawable/add_button"
             android:src="@drawable/baseline_add_24"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.44"
+            app:layout_constraintEnd_toStartOf="@+id/addToFav"
+            app:layout_constraintHorizontal_bias="0.854"
             app:layout_constraintStart_toEndOf="@+id/book_cover"
             app:layout_constraintTop_toBottomOf="@+id/book_author"
             app:layout_constraintVertical_bias="1.0" />
@@ -100,13 +99,12 @@
             android:id="@+id/addToFav"
             android:layout_width="80dp"
             android:layout_height="30dp"
+            android:layout_marginEnd="15dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/add_button"
             android:src="@drawable/baseline_access_time_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.924"
-            app:layout_constraintStart_toEndOf="@+id/book_cover"
             app:layout_constraintTop_toBottomOf="@+id/book_author"
             app:layout_constraintVertical_bias="1.0" />
 

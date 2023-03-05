@@ -39,5 +39,4 @@ public class LogoutActivity extends AppCompatActivity {
         startActivity(in);
         finish();
     }
-
 }
