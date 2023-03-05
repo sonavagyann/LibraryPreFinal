@@ -2,20 +2,16 @@ package com.example.libraryapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class ResetPassword extends AppCompatActivity {
+public class ResetPasswordActivity extends AppCompatActivity {
 
     private EditText resetEmail;
     private String email;
@@ -47,12 +43,12 @@ public class ResetPassword extends AppCompatActivity {
     private void forgotPass(){
         mAuth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
-                Toast.makeText(ResetPassword.this, "Check your email", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(ResetPassword.this, LoginActivity.class));
+                Toast.makeText(ResetPasswordActivity.this, "Check your email", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(ResetPasswordActivity.this, LoginActivity.class));
                 finish();
             }
             else{
-                Toast.makeText(ResetPassword.this, ""+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ResetPasswordActivity.this, ""+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

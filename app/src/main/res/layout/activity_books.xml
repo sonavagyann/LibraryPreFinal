@@ -123,7 +123,6 @@
         android:gravity="center_vertical"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
-        android:layout_marginTop="50dp"
         android:text="In what was once North America,
 the Capitol of Panem maintains its hold on its 12 districts
 by forcing them each to select a boy and a girl, called Tributes,
@@ -140,6 +139,6 @@ in an arena where she must weigh survival against love."
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.70" />
+        app:layout_constraintVertical_bias="0.55" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -59,7 +59,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ResetPassword"
+            android:name=".ResetPasswordActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
