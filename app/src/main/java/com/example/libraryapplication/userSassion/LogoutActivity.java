@@ -1,4 +1,4 @@
-package com.example.libraryapplication;
+package com.example.libraryapplication.userSassion;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 
+import com.example.libraryapplication.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LogoutActivity extends AppCompatActivity {
