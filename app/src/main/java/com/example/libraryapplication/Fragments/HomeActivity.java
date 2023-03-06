@@ -1,4 +1,4 @@
-package com.example.libraryapplication;
+package com.example.libraryapplication.Fragments;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,9 @@ import androidx.fragment.app.Fragment;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
+
+import com.example.libraryapplication.HomeFragment;
+import com.example.libraryapplication.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HomeActivity extends AppCompatActivity {

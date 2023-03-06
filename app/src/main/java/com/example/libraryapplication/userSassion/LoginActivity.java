@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.libraryapplication.HomeActivity;
+import com.example.libraryapplication.Fragments.HomeActivity;
 import com.example.libraryapplication.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

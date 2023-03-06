@@ -78,6 +78,7 @@ public class HomeFragment extends Fragment {
                 onAddToBookings(book);
             }
         });
+
         recyclerView2.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView2.setAdapter(booksAdapter);
 
@@ -110,23 +111,20 @@ public class HomeFragment extends Fragment {
 
     private void setUpFirestore() {
         loading.setVisibility(View.VISIBLE);
-        dbListener = db.whereEqualTo("isBooked", false)
-                .addSnapshotListener((snapshots, error) -> {
-                    if (error != null) {
-                        Toast.makeText(getContext(), "Error Fetching Books", Toast.LENGTH_SHORT).show();
-                        error.printStackTrace();
-                        return;
-                    }
-
-                    if (snapshots != null) {
-                        container.setVisibility(View.VISIBLE);
-                        books.clear();
-                        books.addAll(snapshots.toObjects(Book.class));
-                        booksAdapter.setBooks(books);
-                    }
-
-                    loading.setVisibility(View.GONE);
-                });
+        dbListener = db.whereEqualTo("isBooked", false).addSnapshotListener((snapshots, error) -> {
+            if (error != null) {
+                Toast.makeText(getContext(), "Error Fetching Books", Toast.LENGTH_SHORT).show();
+                error.printStackTrace();
+                return;
+            }
+            if (snapshots != null) {
+                container.setVisibility(View.VISIBLE);
+                books.clear();
+                books.addAll(snapshots.toObjects(Book.class));
+                booksAdapter.setBooks(books);
+            }
+            loading.setVisibility(View.GONE);
+        });
     }
 
     private void filterByGenre(int position) {
@@ -150,9 +148,8 @@ public class HomeFragment extends Fragment {
         ArrayList<Book> filteredList = new ArrayList<>();
 
         for (Book item : books) {
-            if (item.getTitle().toLowerCase().contains(book.toLowerCase()) || item.getAuthor()
-                    .toLowerCase()
-                    .contains(book.toLowerCase())) {
+            if (item.getTitle().toLowerCase().contains(book.toLowerCase()) ||
+                    item.getAuthor().toLowerCase().contains(book.toLowerCase())) {
                 filteredList.add(item);
             }
         }
@@ -179,16 +176,16 @@ public class HomeFragment extends Fragment {
         container.setVisibility(View.GONE);
         loading.setVisibility(View.VISIBLE);
 
-        db.document(book.getTitle())
-                .update("isBooked", true)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        container.setVisibility(View.VISIBLE);
-                    } else {
-                        task.getException().printStackTrace();
-                        Toast.makeText(getContext(), "Error adding Book to booking", Toast.LENGTH_SHORT).show();
-                    }
-                    loading.setVisibility(View.GONE);
-                });
+        db.document(book.getTitle()).update("isBooked", true).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                container.setVisibility(View.VISIBLE);
+                Toast.makeText(getContext(), "Booked", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                task.getException().printStackTrace();
+                Toast.makeText(getContext(), "Error adding Book to booking", Toast.LENGTH_SHORT).show();
+            }
+            loading.setVisibility(View.GONE);
+        });
     }
 }

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".ReadFragment"
+    tools:context=".Fragments.ReadFragment"
     android:background="#d3d3d3">
 
     <androidx.constraintlayout.widget.ConstraintLayout

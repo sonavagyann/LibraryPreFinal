@@ -33,10 +33,8 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
         Book book = books.get(position);
         holder.title.setText(book.getTitle());
         holder.author.setText(book.getAuthor());
-        //holder.pages.setText(book.getPages());
         ImageRequest request = new ImageRequest.Builder(holder.myImage.getContext()).data(book.getImageLink())
-                .target(holder.myImage)
-                .build();
+                .target(holder.myImage).build();
         Coil.imageLoader(holder.myImage.getContext()).enqueue(request);
         holder.addFavImg.setImageResource(R.drawable.baseline_access_time_24);
         holder.addFavImg.setOnClickListener(view -> listener.onAddToBookingsClick(book));

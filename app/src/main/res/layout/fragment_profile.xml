@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#d3d3d3"
-    tools:context=".ProfileFragment">
+    tools:context=".Fragments.ProfileFragment">
 
 
     <LinearLayout
@@ -109,7 +109,7 @@
 
                 <TextView
                     android:layout_width="107dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="15dp"
                     android:layout_weight="0"
                     android:text="Password:"
@@ -120,9 +120,9 @@
 
                 <TextView
                     android:id="@+id/profpassword"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="15dp"
+                    android:layout_width="135dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="10dp"
                     android:layout_weight="1"
                     android:gravity="right"
                     android:text="password"
@@ -130,6 +130,15 @@
                     android:textSize="20sp"
                     tools:layout_editor_absoluteX="210dp"
                     tools:layout_editor_absoluteY="107dp" />
+
+                <ImageView
+                    android:id="@+id/forPass"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="15dp"
+                    android:background="@drawable/hide_pass"
+                    />
 
             </LinearLayout>
 
