@@ -1,45 +1,38 @@
 package com.example.libraryapplication;
 
-import static android.content.ContentValues.TAG;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
-
+import com.google.firebase.firestore.ListenerRegistration;
 import java.util.ArrayList;
-import java.util.List;
 
 public class HomeFragment extends Fragment {
 
-    String[] genres;
-    ArrayList<Book> books = new ArrayList<>();
-    RecyclerView recyclerView;
-    RecyclerView recyclerView2;
-    BooksAdapter booksAdapter;
+    private String[] genres;
+    private final ArrayList<Book> books = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private RecyclerView recyclerView2;
+    private BooksAdapter booksAdapter;
 
-    View loading;
-    View container;
-    EditText searchView;
+    private View loading;
+    private View container;
+    private EditText searchView;
+    private final CollectionReference db = FirebaseFirestore.getInstance().collection("Books");
+    private ListenerRegistration dbListener;
 
     public HomeFragment() {
     }
@@ -69,7 +62,22 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(genresAdapter);
 
-        booksAdapter = new BooksAdapter(getContext(), this::onBookClick);
+        booksAdapter = new BooksAdapter(new OnBookClickListener() {
+            @Override
+            public void onItemClick(Book book) {
+                onBookClick(book);
+            }
+
+            @Override
+            public void onAddToWishListClick(Book book) {
+                onAddToWishList(book);
+            }
+
+            @Override
+            public void onAddToBookingsClick(Book book) {
+                onAddToBookings(book);
+            }
+        });
         recyclerView2.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView2.setAdapter(booksAdapter);
 
@@ -89,27 +97,36 @@ public class HomeFragment extends Fragment {
             public void afterTextChanged(Editable editable) {
                 filterByKeyword(editable.toString());
             }
-
         });
 
         setUpFirestore();
+    }
 
+    @Override
+    public void onDestroyView() {
+        dbListener.remove();
+        super.onDestroyView();
     }
 
     private void setUpFirestore() {
         loading.setVisibility(View.VISIBLE);
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Books").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                container.setVisibility(View.VISIBLE);
-                books.clear();
-                books.addAll(task.getResult().toObjects(Book.class));
-                booksAdapter.setBooks(books);
-            } else {
-                Toast.makeText(getContext(), "Error Fetching Books", Toast.LENGTH_SHORT).show();
-            }
-            loading.setVisibility(View.GONE);
-        });
+        dbListener = db.whereEqualTo("isBooked", false)
+                .addSnapshotListener((snapshots, error) -> {
+                    if (error != null) {
+                        Toast.makeText(getContext(), "Error Fetching Books", Toast.LENGTH_SHORT).show();
+                        error.printStackTrace();
+                        return;
+                    }
+
+                    if (snapshots != null) {
+                        container.setVisibility(View.VISIBLE);
+                        books.clear();
+                        books.addAll(snapshots.toObjects(Book.class));
+                        booksAdapter.setBooks(books);
+                    }
+
+                    loading.setVisibility(View.GONE);
+                });
     }
 
     private void filterByGenre(int position) {
@@ -120,21 +137,22 @@ public class HomeFragment extends Fragment {
         } else {
             String genre = genres[position];
             for (Book item : books) {
-                System.out.println(item.genre + " - " + genre);
+                System.out.println(item.getGenre() + " - " + genre);
                 if (item.getGenre().equalsIgnoreCase(genre)) {
                     filteredList.add(item);
                 }
             }
         }
         booksAdapter.setBooks(filteredList);
-
     }
 
     private void filterByKeyword(String book) {
         ArrayList<Book> filteredList = new ArrayList<>();
 
         for (Book item : books) {
-            if (item.getTitle().toLowerCase().contains(book.toLowerCase()) || item.getAuthor().toLowerCase().contains(book.toLowerCase())) {
+            if (item.getTitle().toLowerCase().contains(book.toLowerCase()) || item.getAuthor()
+                    .toLowerCase()
+                    .contains(book.toLowerCase())) {
                 filteredList.add(item);
             }
         }
@@ -151,5 +169,26 @@ public class HomeFragment extends Fragment {
         intent.putExtra("Image", book.getImageLink());
 
         startActivity(intent);
+    }
+
+    private void onAddToWishList(Book book) {
+        Toast.makeText(getContext(), "onAddToWishList Clicked", Toast.LENGTH_SHORT).show();
+    }
+
+    private void onAddToBookings(Book book) {
+        container.setVisibility(View.GONE);
+        loading.setVisibility(View.VISIBLE);
+
+        db.document(book.getTitle())
+                .update("isBooked", true)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        container.setVisibility(View.VISIBLE);
+                    } else {
+                        task.getException().printStackTrace();
+                        Toast.makeText(getContext(), "Error adding Book to booking", Toast.LENGTH_SHORT).show();
+                    }
+                    loading.setVisibility(View.GONE);
+                });
     }
 }

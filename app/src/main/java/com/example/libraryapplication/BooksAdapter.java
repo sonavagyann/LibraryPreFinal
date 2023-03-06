@@ -1,38 +1,30 @@
 package com.example.libraryapplication;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-
+import coil.Coil;
+import coil.request.ImageRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-import coil.Coil;
-import coil.request.ImageRequest;
-
 public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder> {
-    private Context context;
-    private OnBookClickListener listener;
-    private List<Book> books = new ArrayList<>();
+    private final OnBookClickListener listener;
+    private final List<Book> books = new ArrayList<>();
 
-    public BooksAdapter(Context context, OnBookClickListener listener){
-        this.context=context;
-        this.listener=listener;
+    public BooksAdapter(OnBookClickListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
     @Override
     public BooksAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view =LayoutInflater.from(parent.getContext()).inflate(R.layout.book_display_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.book_display_layout, parent, false);
         return new BooksAdapter.MyViewHolder(view);
     }
 
@@ -42,12 +34,14 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
         holder.title.setText(book.getTitle());
         holder.author.setText(book.getAuthor());
         //holder.pages.setText(book.getPages());
-        ImageRequest request = new ImageRequest.Builder(context).data(book.getImageLink()).target(holder.myImage).build();
-        Coil.imageLoader(context).enqueue(request);
+        ImageRequest request = new ImageRequest.Builder(holder.myImage.getContext()).data(book.getImageLink())
+                .target(holder.myImage)
+                .build();
+        Coil.imageLoader(holder.myImage.getContext()).enqueue(request);
         holder.addFavImg.setImageResource(R.drawable.baseline_access_time_24);
-        holder.addFavImg.setOnClickListener(view -> Toast.makeText(view.getContext(), "Clicked", Toast.LENGTH_SHORT).show());
+        holder.addFavImg.setOnClickListener(view -> listener.onAddToBookingsClick(book));
         holder.addReadImg.setImageResource(R.drawable.baseline_add_24);
-        holder.addReadImg.setOnClickListener(view -> Toast.makeText(view.getContext(), "Clicked", Toast.LENGTH_SHORT).show());
+        holder.addReadImg.setOnClickListener(view -> listener.onAddToWishListClick(book));
         holder.itemView.setOnClickListener(view -> listener.onItemClick(book));
     }
 
@@ -62,10 +56,11 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
         notifyDataSetChanged();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView title, author, pages;
         ImageView myImage, addFavImg, addReadImg;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.book_title);
@@ -75,6 +70,5 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
             addFavImg = itemView.findViewById(R.id.addToFav);
             addReadImg = itemView.findViewById(R.id.addToRead);
         }
-
     }
 }
