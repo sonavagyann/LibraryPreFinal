@@ -1,5 +1,6 @@
 package com.example.libraryapplication.Fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,7 +27,9 @@ public class ProfileFragment extends Fragment {
     TextView userE, userP;
     Button logout;
 
-    ImageView hidePass;
+    ImageView seePass;
+
+    private boolean isShowPassword = true;
 
     public ProfileFragment(){}
 
@@ -51,19 +55,39 @@ public class ProfileFragment extends Fragment {
             Intent intent = new Intent(getContext(), LogoutActivity.class);
             startActivity(intent);
         });
-        hidePass = view.findViewById(R.id.forPass);
-        hidePass.setImageResource(R.drawable.hide_pass);
+        seePass = view.findViewById(R.id.forPass);
+        seePass.setImageResource(R.drawable.see_pass);
 
-        hidePass.setOnClickListener(new View.OnClickListener() {
+        seePass.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void onClick(View view) {
-                /*if(password.getTransformationMethod().equals(HideReturnsTransformationMethod.getInstance())){
-                    password.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                    hidePass.setImageResource(R.drawable.see_pass);
-                }*/
+                    if (isShowPassword) {
+                        userP.setTransformationMethod(new PasswordTransformationMethod());
+                        seePass.setImageDrawable(getResources().getDrawable(R.drawable.hide_pass));
+                        isShowPassword = false;
+                    }
+                    else{
+                        userP.setTransformationMethod(null);
+                        seePass.setImageDrawable(getResources().getDrawable(R.drawable.see_pass));
+                        isShowPassword = true;
+                    }
             }
         });
 
         return view;
+    }
+
+    public void showHidePass(View view){
+        if(view.getId()==R.id.forPass){
+            if(userP.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())){
+                ((ImageView)(view)).setImageResource(R.drawable.hide_pass);
+                userP.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            }
+            else{
+                ((ImageView)(view)).setImageResource(R.drawable.see_pass);
+                userP.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            }
+        }
     }
 }

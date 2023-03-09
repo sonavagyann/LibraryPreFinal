@@ -18,7 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class HomeFragment extends Fragment {
 
@@ -34,8 +37,7 @@ public class HomeFragment extends Fragment {
     private final CollectionReference db = FirebaseFirestore.getInstance().collection("Books");
     private ListenerRegistration dbListener;
 
-    public HomeFragment() {
-    }
+    public HomeFragment() {}
 
     @SuppressLint("MissingInflatedId")
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,7 +49,6 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         recyclerView = view.findViewById(R.id.recyclerView);
-
         recyclerView2 = view.findViewById(R.id.recyclerView2);
         recyclerView2.setHasFixedSize(true);
         recyclerView.setHasFixedSize(true);
@@ -62,7 +63,7 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(genresAdapter);
 
-        booksAdapter = new BooksAdapter(new OnBookClickListener() {
+        booksAdapter = new BooksAdapter(true, new OnBookClickListener() {
             @Override
             public void onItemClick(Book book) {
                 onBookClick(book);
@@ -180,6 +181,10 @@ public class HomeFragment extends Fragment {
             if (task.isSuccessful()) {
                 container.setVisibility(View.VISIBLE);
                 Toast.makeText(getContext(), "Booked", Toast.LENGTH_SHORT).show();
+
+                Date date = new Date();
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                String formattedDate = dateFormat.format(date);
             }
             else{
                 task.getException().printStackTrace();

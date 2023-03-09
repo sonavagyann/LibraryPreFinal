@@ -41,8 +41,8 @@ public class HomeActivity extends AppCompatActivity {
                     selectedFragment = new BookedFragment();
                     break;
 
-                case R.id.add:
-                    selectedFragment = new ReadFragment();
+                case R.id.wishlist:
+                    selectedFragment = new WishlistFragment();
                     break;
 
                 case R.id.profile:

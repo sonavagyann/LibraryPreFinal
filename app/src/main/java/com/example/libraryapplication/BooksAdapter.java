@@ -17,8 +17,11 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
     private final OnBookClickListener listener;
     private final List<Book> books = new ArrayList<>();
 
-    public BooksAdapter(OnBookClickListener listener) {
+    private boolean showBooking;
+
+    public BooksAdapter(boolean showBooking, OnBookClickListener listener) {
         this.listener = listener;
+        this.showBooking = showBooking;
     }
 
     @NonNull
@@ -36,6 +39,13 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
         ImageRequest request = new ImageRequest.Builder(holder.myImage.getContext()).data(book.getImageLink())
                 .target(holder.myImage).build();
         Coil.imageLoader(holder.myImage.getContext()).enqueue(request);
+        int visibility;
+        if (showBooking) {
+            visibility = View.VISIBLE;
+        } else {
+            visibility = View.GONE;
+        }
+        holder.addFavImg.setVisibility(visibility);
         holder.addFavImg.setImageResource(R.drawable.baseline_access_time_24);
         holder.addFavImg.setOnClickListener(view -> listener.onAddToBookingsClick(book));
         holder.addReadImg.setImageResource(R.drawable.baseline_add_24);
@@ -55,7 +65,6 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-
         TextView title, author, pages;
         ImageView myImage, addFavImg, addReadImg;
 

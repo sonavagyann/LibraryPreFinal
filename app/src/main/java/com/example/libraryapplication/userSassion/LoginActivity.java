@@ -60,10 +60,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void PerformLogin() {
-
         String em = email.getText().toString();
         String pass = password.getText().toString();
-
 
         if (em.equals("") || pass.equals("")) {
             Toast.makeText(LoginActivity.this, "Fill all the fields", Toast.LENGTH_SHORT).show();
@@ -78,6 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                         sendUserToNextActivity();
                         Toast.makeText(LoginActivity.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                     else{
                         Toast.makeText(LoginActivity.this, "Please, verify your email", Toast.LENGTH_SHORT).show();
@@ -94,15 +93,5 @@ public class LoginActivity extends AppCompatActivity {
     private void sendUserToNextActivity() {
         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
         startActivity(intent);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if(mAuth.getCurrentUser() != null){
-            Toast.makeText(this, "You are logged in", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-            finish();
-        }
     }
 }

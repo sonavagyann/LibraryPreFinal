@@ -64,6 +64,7 @@ public class RegisterActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                         Toast.makeText(RegisterActivity.this, "Verify your email", Toast.LENGTH_SHORT).show();
                         sendUserToNextActivity();
+                        //finish();
                     }
                     else{
                         progressDialog.dismiss();

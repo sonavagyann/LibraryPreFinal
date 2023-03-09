@@ -29,7 +29,6 @@ public class LogoutActivity extends AppCompatActivity {
                 mAuth.signOut();
                 logoutUser();
                 Toast.makeText(LogoutActivity.this, "Hope to see you again soon", Toast.LENGTH_SHORT).show();
-
             }
         });
     }

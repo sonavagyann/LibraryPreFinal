@@ -11,11 +11,11 @@ import androidx.fragment.app.Fragment;
 
 import com.example.libraryapplication.R;
 
-public class ReadFragment extends Fragment {
+public class WishlistFragment extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_read,container,false);
+        return inflater.inflate(R.layout.fragment_wishlist,container,false);
     }
 }
