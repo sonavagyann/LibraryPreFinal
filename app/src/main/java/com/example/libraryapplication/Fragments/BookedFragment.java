@@ -60,7 +60,6 @@ public class BookedFragment extends Fragment {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         bookedRecyclerView.setLayoutManager(layoutManager);
-        bookedRecyclerView.setAdapter(booksAdapter);
 
         booksAdapter = new BooksAdapter(false, new OnBookClickListener() {
             @Override
@@ -69,13 +68,12 @@ public class BookedFragment extends Fragment {
             }
 
             @Override
-            public void onAddToWishListClick(Book book) {
-                onAddToWishList(book);
-            }
+            public void onAddToWishListClick(Book book) {}
 
             @Override
-            public void onAddToBookingsClick(Book book) {onAddToBookings(book);}
+            public void onAddToBookingsClick(Book book) {}
         });
+        bookedRecyclerView.setAdapter(booksAdapter);
 
         setUpFirestore();
     }
@@ -93,7 +91,8 @@ public class BookedFragment extends Fragment {
                 error.printStackTrace();
                 return;
             }
-            if (snapshots != null) {
+            System.out.println(snapshots);
+            if (snapshots != null ) {
                 container.setVisibility(View.VISIBLE);
                 books.clear();
                 books.addAll(snapshots.toObjects(Book.class));
