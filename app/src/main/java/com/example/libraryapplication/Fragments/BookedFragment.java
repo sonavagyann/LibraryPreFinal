@@ -3,13 +3,9 @@ package com.example.libraryapplication.Fragments;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,22 +16,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.libraryapplication.Book;
 import com.example.libraryapplication.BookActivity;
 import com.example.libraryapplication.BooksAdapter;
-import com.example.libraryapplication.GenresAdapter;
 import com.example.libraryapplication.OnBookClickListener;
 import com.example.libraryapplication.R;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class BookedFragment extends Fragment {
     private final ArrayList<Book> books = new ArrayList<>();
     private RecyclerView bookedRecyclerView;
     private BooksAdapter booksAdapter;
-
     private View loading;
     private View container;
     private final CollectionReference db = FirebaseFirestore.getInstance().collection("Books");
@@ -91,7 +83,6 @@ public class BookedFragment extends Fragment {
                 error.printStackTrace();
                 return;
             }
-            System.out.println(snapshots);
             if (snapshots != null ) {
                 container.setVisibility(View.VISIBLE);
                 books.clear();
@@ -101,10 +92,6 @@ public class BookedFragment extends Fragment {
             loading.setVisibility(View.GONE);
         });
     }
-
-    private void onAddToWishList(Book book) {}
-
-    private void onAddToBookings(Book book) {}
 
     private void onBookClick(Book book) {
         Intent intent = new Intent(getContext(), BookActivity.class);

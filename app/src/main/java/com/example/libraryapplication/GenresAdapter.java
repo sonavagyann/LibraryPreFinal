@@ -17,7 +17,7 @@ public class GenresAdapter extends RecyclerView.Adapter<GenresAdapter.MyViewHold
     OnTabChangeListener listener;
     String[] genres;
     Context context;
-    private static int lastClickedPosition = -1;
+    private static int lastClickedPosition = 0;
 
     public GenresAdapter(Context context, String[] genres, OnTabChangeListener listener) {
         this.context=context;
