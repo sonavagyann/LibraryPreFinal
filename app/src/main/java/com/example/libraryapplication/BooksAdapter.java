@@ -45,9 +45,10 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
         } else {
             visibility = View.GONE;
         }
-        holder.addFavImg.setVisibility(visibility);
+        //holder.addFavImg.setVisibility(visibility);
         holder.addFavImg.setImageResource(R.drawable.baseline_access_time_24);
         holder.addFavImg.setOnClickListener(view -> listener.onAddToBookingsClick(book));
+        holder.addReadImg.setVisibility(visibility);
         holder.addReadImg.setImageResource(R.drawable.baseline_add_24);
         holder.addReadImg.setOnClickListener(view -> listener.onAddToWishListClick(book));
         holder.itemView.setOnClickListener(view -> listener.onItemClick(book));

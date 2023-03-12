@@ -182,6 +182,7 @@ public class HomeFragment extends Fragment {
                 container.setVisibility(View.VISIBLE);
                 Toast.makeText(getContext(), "Booked", Toast.LENGTH_SHORT).show();
 
+
                 Date date = new Date();
                 @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                 String formattedDate = dateFormat.format(date);

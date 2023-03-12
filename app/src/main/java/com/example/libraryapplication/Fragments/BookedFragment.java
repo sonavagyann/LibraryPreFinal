@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,7 +23,9 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class BookedFragment extends Fragment {
     private final ArrayList<Book> books = new ArrayList<>();
@@ -63,7 +66,9 @@ public class BookedFragment extends Fragment {
             public void onAddToWishListClick(Book book) {}
 
             @Override
-            public void onAddToBookingsClick(Book book) {}
+            public void onAddToBookingsClick(Book book) {
+                onAddToBookings(book);
+            }
         });
         bookedRecyclerView.setAdapter(booksAdapter);
 
@@ -93,6 +98,27 @@ public class BookedFragment extends Fragment {
         });
     }
 
+    private void onAddToBookings(Book book) {
+        container.setVisibility(View.GONE);
+        loading.setVisibility(View.VISIBLE);
+
+        db.document(book.getTitle()).update("isBooked", false).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                container.setVisibility(View.VISIBLE);
+                Toast.makeText(getContext(), "Unbooked", Toast.LENGTH_SHORT).show();
+
+
+                Date date = new Date();
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                String formattedDate = dateFormat.format(date);
+            }
+            else{
+                task.getException().printStackTrace();
+                Toast.makeText(getContext(), "Error removing book from Booking", Toast.LENGTH_SHORT).show();
+            }
+            loading.setVisibility(View.GONE);
+        });
+    }
     private void onBookClick(Book book) {
         Intent intent = new Intent(getContext(), BookActivity.class);
 
