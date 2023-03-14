@@ -1,7 +1,9 @@
 package com.example.libraryapplication.Fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +31,8 @@ import java.util.Date;
 
 public class BookedFragment extends Fragment {
     private final ArrayList<Book> books = new ArrayList<>();
+
+    private Context context;
     private RecyclerView bookedRecyclerView;
     private BooksAdapter booksAdapter;
     private View loading;
@@ -46,6 +50,10 @@ public class BookedFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        if(!isConnected()){
+            Toast.makeText(getContext(), "No Internet Access", Toast.LENGTH_SHORT).show();
+        }
 
         bookedRecyclerView = view.findViewById(R.id.booked_recyclerview);
         bookedRecyclerView.setHasFixedSize(true);
@@ -73,6 +81,11 @@ public class BookedFragment extends Fragment {
         bookedRecyclerView.setAdapter(booksAdapter);
 
         setUpFirestore();
+    }
+
+    private boolean isConnected(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(context.CONNECTIVITY_SERVICE);
+        return connectivityManager.getActiveNetworkInfo()!=null && connectivityManager.getActiveNetworkInfo().isConnectedOrConnecting();
     }
 
     @Override

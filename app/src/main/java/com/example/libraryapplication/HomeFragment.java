@@ -1,7 +1,9 @@
 package com.example.libraryapplication;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -26,11 +28,13 @@ import java.util.Date;
 public class HomeFragment extends Fragment {
 
     private String[] genres;
+
     private final ArrayList<Book> books = new ArrayList<>();
     private RecyclerView recyclerView;
     private RecyclerView recyclerView2;
     private BooksAdapter booksAdapter;
 
+    private Context context;
     private View loading;
     private View container;
     private EditText searchView;
@@ -46,7 +50,12 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
         super.onViewCreated(view, savedInstanceState);
+
+        if(!isConnected()){
+            Toast.makeText(getContext(), "No Internet Access", Toast.LENGTH_SHORT).show();
+        }
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView2 = view.findViewById(R.id.recyclerView2);
@@ -104,6 +113,11 @@ public class HomeFragment extends Fragment {
         setUpFirestore();
     }
 
+    private boolean isConnected(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(context.CONNECTIVITY_SERVICE);
+        return connectivityManager.getActiveNetworkInfo()!=null && connectivityManager.getActiveNetworkInfo().isConnectedOrConnecting();
+    }
+
     @Override
     public void onDestroyView() {
         dbListener.remove();
@@ -122,9 +136,7 @@ public class HomeFragment extends Fragment {
                 container.setVisibility(View.VISIBLE);
                 books.clear();
                 books.addAll(snapshots.toObjects(Book.class));
-                booksAdapter.setBooks(books);
-            }
-            loading.setVisibility(View.GONE);
+                booksAdapter.setBooks(books);}loading.setVisibility(View.GONE);
         });
     }
 
@@ -174,24 +186,28 @@ public class HomeFragment extends Fragment {
     }
 
     private void onAddToBookings(Book book) {
-        container.setVisibility(View.GONE);
-        loading.setVisibility(View.VISIBLE);
+        if(!isConnected()){
+            Toast.makeText(getContext(), "No Internet Access", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            container.setVisibility(View.GONE);
+            loading.setVisibility(View.VISIBLE);
 
-        db.document(book.getTitle()).update("isBooked", true).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                container.setVisibility(View.VISIBLE);
-                Toast.makeText(getContext(), "Booked", Toast.LENGTH_SHORT).show();
+            db.document(book.getTitle()).update("isBooked", true).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    container.setVisibility(View.VISIBLE);
+                    Toast.makeText(getContext(), "Booked", Toast.LENGTH_SHORT).show();
 
 
-                Date date = new Date();
-                @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                String formattedDate = dateFormat.format(date);
-            }
-            else{
-                task.getException().printStackTrace();
-                Toast.makeText(getContext(), "Error adding Book to booking", Toast.LENGTH_SHORT).show();
-            }
-            loading.setVisibility(View.GONE);
-        });
+                    Date date = new Date();
+                    @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                    String formattedDate = dateFormat.format(date);
+                } else {
+                    task.getException().printStackTrace();
+                    Toast.makeText(getContext(), "Error adding Book to booking", Toast.LENGTH_SHORT).show();
+                }
+                loading.setVisibility(View.GONE);
+            });
+        }
     }
 }
