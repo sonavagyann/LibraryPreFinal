@@ -64,7 +64,7 @@ public class BookedFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         bookedRecyclerView.setLayoutManager(layoutManager);
 
-        booksAdapter = new BooksAdapter(false, new OnBookClickListener() {
+        booksAdapter = new BooksAdapter(false, true, new OnBookClickListener() {
             @Override
             public void onItemClick(Book book) {
                 onBookClick(book);

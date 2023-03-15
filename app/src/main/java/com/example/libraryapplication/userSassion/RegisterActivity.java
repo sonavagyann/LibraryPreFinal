@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.libraryapplication.Book;
 import com.example.libraryapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -68,7 +69,7 @@ public class RegisterActivity extends AppCompatActivity {
                     if(task1.isSuccessful()){
                         progressDialog.dismiss();
                         Toast.makeText(RegisterActivity.this, "Verify your email", Toast.LENGTH_SHORT).show();
-                        Map<String, List<String>> data = new HashMap<>();
+                        Map<String, List<Book>> data = new HashMap<>();
                         FirebaseFirestore.getInstance().collection("Users").document(mAuth.getCurrentUser().getUid()).set(data);
                         sendUserToNextActivity();
                         //finish();

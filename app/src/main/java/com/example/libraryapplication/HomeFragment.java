@@ -28,13 +28,15 @@ import com.google.firebase.firestore.ListenerRegistration;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class HomeFragment extends Fragment {
 
     private String[] genres;
 
     private final ArrayList<Book> books = new ArrayList<>();
-    private final ArrayList<String> wishList = new ArrayList<>();
+    private final ArrayList<Book> wishList = new ArrayList<>();
     private RecyclerView recyclerView;
     private RecyclerView recyclerView2;
     private BooksAdapter booksAdapter;
@@ -78,7 +80,7 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(genresAdapter);
 
-        booksAdapter = new BooksAdapter(true, new OnBookClickListener() {
+        booksAdapter = new BooksAdapter(true, true, new OnBookClickListener() {
             @Override
             public void onItemClick(Book book) {
                 onBookClick(book);
@@ -158,10 +160,22 @@ public class HomeFragment extends Fragment {
                         }
 
                         if (snapshots != null) {
-                            ArrayList<String> ids = (ArrayList<String>) snapshots.get("ids");
-                            if (ids != null) {
+                            List<Map<String, Object>> result = (List<Map<String, Object>>) snapshots.get("books");
+                            if(result != null) {
                                 wishList.clear();
-                                wishList.addAll(ids);
+                                for (Map<String, Object> map : result) {
+                                    map.get("id");
+                                    map.get("genre");
+                                    map.get("title");
+                                    map.get("author");
+                                    map.get("pages");
+                                    map.get("imageLink");
+                                    map.get("descriptions");
+                                    map.get("isBooked");
+                                    Book book = new Book((String) map.get("id"), (String) map.get("genre"), (String) map.get("title"), (String) map.get("author"),
+                                            (String) map.get("pages"), (String) map.get("imageLink"), (String) map.get("description"), (Boolean) map.get("isBooked"));
+                                    wishList.add(book);
+                                }
                             }
                         }
                     });
@@ -212,12 +226,12 @@ public class HomeFragment extends Fragment {
     private void onAddToWishList(Book book) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            if (!wishList.contains(book.getId())) {
-                wishList.add(book.getId());
+            if (!wishList.contains(book)) {
+                wishList.add(book);
                 FirebaseFirestore.getInstance()
                         .collection("Users")
                         .document(user.getUid())
-                        .update("ids", wishList)
+                        .update("books", wishList)
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
                                 Toast.makeText(getContext(), "Book added to wishlist", Toast.LENGTH_SHORT).show();

@@ -39,4 +39,11 @@ public class Book {
 
     public String getId() {return id;}
 
+    public Boolean getBooked() {
+        return isBooked;
+    }
+
+    public void setBooked(Boolean booked) {
+        isBooked = booked;
+    }
 }
