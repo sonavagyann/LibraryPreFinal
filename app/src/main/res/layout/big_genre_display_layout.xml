@@ -18,15 +18,15 @@
     app:strokeColor="@color/white"
     app:strokeWidth="2dp">
 
-        <TextView
-            android:id="@+id/text"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:includeFontPadding="false"
-            android:text="Fiction"
-            android:textSize="15sp"
-            android:gravity="center_vertical|center_horizontal"
-            android:textStyle="bold"
-            android:textColor="#C0C0C0"/>
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="125dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center"
+        android:includeFontPadding="false"
+        android:text="Fiction"
+        android:textSize="18sp"
+        android:gravity="center_vertical|center_horizontal"
+        android:textStyle="bold"
+        android:textColor="#C0C0C0"/>
 </androidx.cardview.widget.CardView>
