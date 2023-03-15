@@ -1,12 +1,13 @@
 package com.example.libraryapplication;
 
 public class Book {
-    private String genre, title, author, pages, description, imageLink;
+    private String id, genre, title, author, pages, description, imageLink;
     private Boolean isBooked;
 
     public Book() {}
 
-    public Book(String genre, String title, String author, String pages, String imageLink, String descriptions, Boolean isBooked) {
+    public Book(String id, String genre, String title, String author, String pages, String imageLink, String descriptions, Boolean isBooked) {
+        this.id = id;
         this.genre = genre;
         this.title = title;
         this.author = author;
@@ -36,11 +37,6 @@ public class Book {
 
     public String getDescription() {return description;}
 
-    public Boolean getBooked() {
-        return isBooked;
-    }
+    public String getId() {return id;}
 
-    public void setBooked(Boolean booked) {
-        isBooked = booked;
-    }
 }

@@ -17,6 +17,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -63,6 +68,8 @@ public class RegisterActivity extends AppCompatActivity {
                     if(task1.isSuccessful()){
                         progressDialog.dismiss();
                         Toast.makeText(RegisterActivity.this, "Verify your email", Toast.LENGTH_SHORT).show();
+                        Map<String, List<String>> data = new HashMap<>();
+                        FirebaseFirestore.getInstance().collection("Users").document(mAuth.getCurrentUser().getUid()).set(data);
                         sendUserToNextActivity();
                         //finish();
                     }

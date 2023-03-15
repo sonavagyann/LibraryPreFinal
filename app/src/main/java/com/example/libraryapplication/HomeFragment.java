@@ -17,7 +17,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 
@@ -30,6 +34,7 @@ public class HomeFragment extends Fragment {
     private String[] genres;
 
     private final ArrayList<Book> books = new ArrayList<>();
+    private final ArrayList<String> wishList = new ArrayList<>();
     private RecyclerView recyclerView;
     private RecyclerView recyclerView2;
     private BooksAdapter booksAdapter;
@@ -40,6 +45,7 @@ public class HomeFragment extends Fragment {
     private EditText searchView;
     private final CollectionReference db = FirebaseFirestore.getInstance().collection("Books");
     private ListenerRegistration dbListener;
+    private ListenerRegistration userListener;
 
     public HomeFragment() {}
 
@@ -121,6 +127,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onDestroyView() {
         dbListener.remove();
+        userListener.remove();
         super.onDestroyView();
     }
 
@@ -138,6 +145,27 @@ public class HomeFragment extends Fragment {
                 books.addAll(snapshots.toObjects(Book.class));
                 booksAdapter.setBooks(books);}loading.setVisibility(View.GONE);
         });
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            userListener = FirebaseFirestore.getInstance()
+                    .collection("Users")
+                    .document(user.getUid())
+                    .addSnapshotListener((snapshots, error) -> {
+                        if (error != null) {
+                            error.printStackTrace();
+                            return;
+                        }
+
+                        if (snapshots != null) {
+                            ArrayList<String> ids = (ArrayList<String>) snapshots.get("ids");
+                            if (ids != null) {
+                                wishList.clear();
+                                wishList.addAll(ids);
+                            }
+                        }
+                    });
+        }
     }
 
     private void filterByGenre(int position) {
@@ -182,7 +210,21 @@ public class HomeFragment extends Fragment {
     }
 
     private void onAddToWishList(Book book) {
-        Toast.makeText(getContext(), "onAddToWishList Clicked", Toast.LENGTH_SHORT).show();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            if (!wishList.contains(book.getId())) {
+                wishList.add(book.getId());
+                FirebaseFirestore.getInstance()
+                        .collection("Users")
+                        .document(user.getUid())
+                        .update("ids", wishList)
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(getContext(), "Book added to wishlist", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        }
     }
 
     private void onAddToBookings(Book book) {
