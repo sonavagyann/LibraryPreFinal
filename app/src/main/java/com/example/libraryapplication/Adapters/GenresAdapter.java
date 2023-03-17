@@ -1,6 +1,4 @@
-package com.example.libraryapplication;
-
-import static com.example.libraryapplication.R.drawable.static_rv_background;
+package com.example.libraryapplication.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,12 +10,16 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.libraryapplication.OnTabChangeListener;
+import com.example.libraryapplication.R;
+
 public class GenresAdapter extends RecyclerView.Adapter<GenresAdapter.MyViewHolder>{
 
     OnTabChangeListener listener;
     String[] genres;
     Context context;
     private static int lastClickedPosition = 0;
+    private boolean isFirstGenreSelected = false;
 
     public GenresAdapter(Context context, String[] genres, OnTabChangeListener listener) {
         this.context=context;
@@ -32,19 +34,26 @@ public class GenresAdapter extends RecyclerView.Adapter<GenresAdapter.MyViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull  MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
         String genre = genres[position];
         holder.text.setText(genre);
-        holder.itemView.setBackgroundResource(R.drawable.static_rv_background);
+        if (position == 0 && !isFirstGenreSelected) {
+            holder.itemView.setBackgroundResource(R.drawable.static_rv_selected_background);
+            isFirstGenreSelected = true;
+            listener.onTabChange(0);
+        } else {
+            holder.itemView.setBackgroundResource(R.drawable.static_rv_background);
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
+             @Override
             public void onClick(View view) {
                 if (lastClickedPosition != -1) {
                     view.setBackgroundResource(R.drawable.static_rv_selected_background);
                     notifyItemChanged(lastClickedPosition);
+                    lastClickedPosition = position;
+                    listener.onTabChange(position);
                 }
-                lastClickedPosition = position;
-                listener.onTabChange(position);
+                isFirstGenreSelected = true;
             }
         });
     }

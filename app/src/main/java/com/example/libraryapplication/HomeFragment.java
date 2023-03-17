@@ -18,10 +18,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.libraryapplication.Adapters.Book;
+import com.example.libraryapplication.Adapters.BooksAdapter;
+import com.example.libraryapplication.Adapters.GenresAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 
@@ -79,6 +81,12 @@ public class HomeFragment extends Fragment {
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(genresAdapter);
+
+        recyclerView.scrollToPosition(0);
+        RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(0);
+        if (viewHolder != null && viewHolder instanceof GenresAdapter.MyViewHolder) {
+            viewHolder.itemView.performClick();
+        }
 
         booksAdapter = new BooksAdapter(true, true, new OnBookClickListener() {
             @Override

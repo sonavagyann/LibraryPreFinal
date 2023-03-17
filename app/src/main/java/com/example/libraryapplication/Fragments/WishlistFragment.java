@@ -16,23 +16,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.libraryapplication.Book;
+import com.example.libraryapplication.Adapters.Book;
 import com.example.libraryapplication.BookActivity;
-import com.example.libraryapplication.BooksAdapter;
+import com.example.libraryapplication.Adapters.BooksAdapter;
 import com.example.libraryapplication.OnBookClickListener;
 import com.example.libraryapplication.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -92,6 +85,7 @@ public class WishlistFragment extends Fragment {
         return connectivityManager.getActiveNetworkInfo()!=null && connectivityManager.getActiveNetworkInfo().isConnectedOrConnecting();
     }
 
+
     private void setUpFirestore() {
         loading.setVisibility(View.VISIBLE);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -118,7 +112,9 @@ public class WishlistFragment extends Fragment {
                                     Book book = new Book((String) map.get("id"), (String) map.get("genre"), (String) map.get("title"), (String) map.get("author"),
                                             (String) map.get("pages"), (String) map.get("imageLink"), (String) map.get("description"), (Boolean) map.get("isBooked"));
                                     books.add(book);
-                                }
+
+
+                            }
                                 container.setVisibility(View.VISIBLE);
                                 booksAdapter.setBooks(books);
                             }

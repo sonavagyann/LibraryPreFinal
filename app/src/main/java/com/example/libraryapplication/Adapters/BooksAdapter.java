@@ -1,4 +1,4 @@
-package com.example.libraryapplication;
+package com.example.libraryapplication.Adapters;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
@@ -8,6 +8,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.libraryapplication.OnBookClickListener;
+import com.example.libraryapplication.R;
+
 import coil.Coil;
 import coil.request.ImageRequest;
 import java.util.ArrayList;

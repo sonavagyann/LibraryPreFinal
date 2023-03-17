@@ -16,9 +16,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.libraryapplication.Book;
+import com.example.libraryapplication.Adapters.Book;
 import com.example.libraryapplication.BookActivity;
-import com.example.libraryapplication.BooksAdapter;
+import com.example.libraryapplication.Adapters.BooksAdapter;
 import com.example.libraryapplication.OnBookClickListener;
 import com.example.libraryapplication.R;
 import com.google.firebase.firestore.CollectionReference;
@@ -75,7 +75,7 @@ public class BookedFragment extends Fragment {
 
             @Override
             public void onAddToBookingsClick(Book book) {
-                onAddToBookings(book);
+                onRemoveFromBookings(book);
             }
         });
         bookedRecyclerView.setAdapter(booksAdapter);
@@ -111,7 +111,7 @@ public class BookedFragment extends Fragment {
         });
     }
 
-    private void onAddToBookings(Book book) {
+    private void onRemoveFromBookings(Book book) {
         container.setVisibility(View.GONE);
         loading.setVisibility(View.VISIBLE);
 
@@ -119,7 +119,6 @@ public class BookedFragment extends Fragment {
             if (task.isSuccessful()) {
                 container.setVisibility(View.VISIBLE);
                 Toast.makeText(getContext(), "Unbooked", Toast.LENGTH_SHORT).show();
-
 
                 Date date = new Date();
                 @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");

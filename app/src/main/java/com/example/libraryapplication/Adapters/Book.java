@@ -1,4 +1,6 @@
-package com.example.libraryapplication;
+package com.example.libraryapplication.Adapters;
+
+import java.util.Objects;
 
 public class Book {
     private String id, genre, title, author, pages, description, imageLink;
@@ -45,5 +47,25 @@ public class Book {
 
     public void setBooked(Boolean booked) {
         isBooked = booked;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof Book)) {
+            return false;
+        }
+        Book other = (Book) obj;
+        return Objects.equals(id, other.id) && Objects.equals(genre, other.genre) &&
+                Objects.equals(title, other.title) && Objects.equals(author, other.author) &&
+                Objects.equals(pages, other.pages) && Objects.equals(imageLink, other.imageLink) &&
+                Objects.equals(description, other.description) && isBooked == other.isBooked;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, genre, title, author, pages, imageLink, description, isBooked);
     }
 }
