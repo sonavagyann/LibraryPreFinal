@@ -263,8 +263,12 @@ public class HomeFragment extends Fragment {
                             }
                         });
             }
+            else {
+                Toast.makeText(getContext(), "Book already added to wishlist", Toast.LENGTH_SHORT).show();
+            }
         }
     }
+
 
     private void onAddToBookings(Book book) {
         if(!isConnected()){
