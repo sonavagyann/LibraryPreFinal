@@ -65,17 +65,16 @@ public class LoginActivity extends AppCompatActivity {
 
         if (em.equals("") || pass.equals("")) {
             Toast.makeText(LoginActivity.this, "Fill all the fields", Toast.LENGTH_SHORT).show();
-        } else {
+        }
+        else {
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
 
             mAuth.signInWithEmailAndPassword(em, pass).addOnCompleteListener( this, task -> {
                 if (task.isSuccessful()) {
-
                     if(mAuth.getCurrentUser().isEmailVerified()){
                         progressDialog.dismiss();
                         sendUserToNextActivity();
-                        Toast.makeText(LoginActivity.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
                         finish();
                     }
                     else{
@@ -86,9 +85,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "" + task.getException(), Toast.LENGTH_SHORT).show();
                 }
             });
-
         }
-
     }
     private void sendUserToNextActivity() {
         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);

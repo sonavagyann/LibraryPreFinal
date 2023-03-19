@@ -43,7 +43,7 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="At LibraryApp"
+        android:text="At BookFinder"
         android:textColor="@color/white"
         android:textSize="28sp"
         android:layout_marginStart="30dp"

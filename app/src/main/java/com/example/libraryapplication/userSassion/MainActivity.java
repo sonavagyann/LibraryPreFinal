@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.example.libraryapplication.Fragments.HomeActivity;
 import com.example.libraryapplication.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,10 +48,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if(mAuth.getCurrentUser() != null){
-            Toast.makeText(this, "You are logged in", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(MainActivity.this, HomeActivity.class));
-            finish();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            if(currentUser.isEmailVerified()){
+                startActivity(new Intent(MainActivity.this, HomeActivity.class));
+                Toast.makeText(this, "You are logged in", Toast.LENGTH_SHORT).show();
+                finish();
+            }
         }
+        //else{
+            //startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            //finish();
+        //}
     }
 }

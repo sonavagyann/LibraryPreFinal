@@ -50,6 +50,7 @@ public class ProfileFragment extends Fragment {
         String password = sharedPreferences.getString("password", "");
         userE.setText(email);
         userP.setText(password);
+        userP.setTransformationMethod(new PasswordTransformationMethod());
         logout = view.findViewById(R.id.logout_button);
         logout.setOnClickListener(view1 -> {
             Intent intent = new Intent(getContext(), LogoutActivity.class);
@@ -76,18 +77,5 @@ public class ProfileFragment extends Fragment {
         });
 
         return view;
-    }
-
-    public void showHidePass(View view){
-        if(view.getId()==R.id.forPass){
-            if(userP.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())){
-                ((ImageView)(view)).setImageResource(R.drawable.hide_pass);
-                userP.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-            }
-            else{
-                ((ImageView)(view)).setImageResource(R.drawable.see_pass);
-                userP.setTransformationMethod(PasswordTransformationMethod.getInstance());
-            }
-        }
     }
 }

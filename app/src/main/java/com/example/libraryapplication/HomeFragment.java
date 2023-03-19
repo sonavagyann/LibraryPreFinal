@@ -29,6 +29,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,7 +47,6 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView recyclerView2;
     private BooksAdapter booksAdapter;
-
     private Context context;
     private View loading;
     private View container;
@@ -266,7 +266,6 @@ public class HomeFragment extends Fragment {
         }
     }
 
-
     private void onAddToBookings(Book book) {
         if(!isConnected()){
             Toast.makeText(getContext(), "No Internet Access", Toast.LENGTH_SHORT).show();
@@ -280,7 +279,6 @@ public class HomeFragment extends Fragment {
                     container.setVisibility(View.VISIBLE);
                     Toast.makeText(getContext(), "Booked", Toast.LENGTH_SHORT).show();
 
-
                     //Date date = new Date();
                     //@SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                     //String formattedDate = dateFormat.format(date);
@@ -292,6 +290,4 @@ public class HomeFragment extends Fragment {
             });
         }
     }
-
-
 }
