@@ -1,5 +1,9 @@
 package com.example.libraryapplication.Adapters;
 
+import android.widget.Toast;
+
+import com.google.firebase.firestore.DocumentSnapshot;
+
 import java.util.Objects;
 
 public class Book {
@@ -44,7 +48,6 @@ public class Book {
     public Boolean getBooked() {
         return isBooked;
     }
-
     public void setBooked(Boolean booked) {
         isBooked = booked;
     }
@@ -68,4 +71,8 @@ public class Book {
     public int hashCode() {
         return Objects.hash(id, genre, title, author, pages, imageLink, description, isBooked);
     }
+
+
+
+
 }

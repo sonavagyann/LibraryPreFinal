@@ -24,10 +24,19 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
 
     private boolean showBooking, showWish;
 
-    public BooksAdapter(boolean showWish, boolean showBooking, OnBookClickListener listener) {
+    private boolean isInWishlistFragment, isInBookedFragment;
+
+    int removeWishlistImg, removeBookedImg;
+
+    public BooksAdapter(boolean showWish, boolean showBooking, OnBookClickListener listener, boolean isInWishlistFragment,
+                        int removeWishlistImg, boolean isInBookedFragment, int removeBookedImg) {
         this.showWish = showWish;
         this.listener = listener;
         this.showBooking = showBooking;
+        this.isInWishlistFragment = isInWishlistFragment;
+        this.removeWishlistImg = removeWishlistImg;
+        this.isInBookedFragment = isInBookedFragment;
+        this.removeBookedImg = removeBookedImg;
     }
 
     @NonNull
@@ -49,21 +58,35 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
         int wishVisibility;
         if (showBooking) {
             bookingVisibility = View.VISIBLE;
-        } else {
+        }
+        else {
             bookingVisibility = View.GONE;
         }
 
         if (showWish) {
             wishVisibility = View.VISIBLE;
-        } else {
+        }
+        else {
             wishVisibility = View.GONE;
         }
-        holder.addFavImg.setVisibility(bookingVisibility);
-        holder.addFavImg.setImageResource(R.drawable.baseline_access_time_24);
-        holder.addFavImg.setOnClickListener(view -> listener.onAddToBookingsClick(book));
-        holder.addReadImg.setVisibility(wishVisibility);
-        holder.addReadImg.setImageResource(R.drawable.baseline_add_24);
-        holder.addReadImg.setOnClickListener(view -> listener.onAddToWishListClick(book));
+
+        holder.addWishlistImg.setVisibility(wishVisibility);
+        if(isInWishlistFragment){
+            holder.addWishlistImg.setImageResource(R.drawable.remove_button);
+        }
+        else{
+            holder.addWishlistImg.setImageResource(R.drawable.baseline_add_24);
+        }
+
+        holder.addBookedImg.setVisibility(bookingVisibility);
+        if(isInBookedFragment){
+            holder.addBookedImg.setImageResource(R.drawable.unbook_icon);
+        }
+        else{
+            holder.addBookedImg.setImageResource(R.drawable.baseline_access_time_24);
+        }
+        holder.addBookedImg.setOnClickListener(view -> listener.onAddToBookingsClick(book));
+        holder.addWishlistImg.setOnClickListener(view -> listener.onAddToWishListClick(book));
         holder.itemView.setOnClickListener(view -> listener.onItemClick(book));
     }
 
@@ -80,7 +103,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView title, author, pages;
-        ImageView myImage, addFavImg, addReadImg;
+        ImageView myImage, addBookedImg, addWishlistImg;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -88,8 +111,8 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
             author = itemView.findViewById(R.id.book_author);
             pages = itemView.findViewById(R.id.book_pages);
             myImage = itemView.findViewById(R.id.book_cover);
-            addFavImg = itemView.findViewById(R.id.addToFav);
-            addReadImg = itemView.findViewById(R.id.addToRead);
+            addBookedImg = itemView.findViewById(R.id.addToFav);
+            addWishlistImg = itemView.findViewById(R.id.addToRead);
         }
     }
 }

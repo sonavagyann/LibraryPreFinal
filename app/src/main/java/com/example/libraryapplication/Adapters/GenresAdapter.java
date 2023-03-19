@@ -20,11 +20,15 @@ public class GenresAdapter extends RecyclerView.Adapter<GenresAdapter.MyViewHold
     Context context;
     private static int lastClickedPosition = 0;
     private boolean isFirstGenreSelected = false;
+    int selectedPosition = 0;
+    private String selectedGenre = "All";
 
     public GenresAdapter(Context context, String[] genres, OnTabChangeListener listener) {
         this.context=context;
         this.listener=listener;
         this.genres=genres;
+        selectedPosition = 0;
+        String selectedGenre = "";
     }
 
     @NonNull
@@ -61,6 +65,10 @@ public class GenresAdapter extends RecyclerView.Adapter<GenresAdapter.MyViewHold
     @Override
     public int getItemCount(){
         return genres.length;
+    }
+
+    public String getSelectedGenre() {
+        return selectedGenre;
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{

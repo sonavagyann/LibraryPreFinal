@@ -29,7 +29,7 @@ public class ProfileFragment extends Fragment {
 
     ImageView seePass;
 
-    private boolean isShowPassword = true;
+    private boolean isShowPassword = false;
 
     public ProfileFragment(){}
 

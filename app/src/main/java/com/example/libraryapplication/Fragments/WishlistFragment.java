@@ -59,6 +59,8 @@ public class WishlistFragment extends Fragment {
         loading = view.findViewById(R.id.wishlist_loading);
         container = view.findViewById(R.id.wishlist_container);
 
+        int removeWishlistImg= R.drawable.remove_button;
+        int removeBookedImg= R.drawable.unbook_icon;
         booksAdapter = new BooksAdapter(true, false, new OnBookClickListener() {
             @Override
             public void onItemClick(Book book) {
@@ -72,7 +74,7 @@ public class WishlistFragment extends Fragment {
 
             @Override
             public void onAddToBookingsClick(Book book){}
-        });
+        }, true, removeWishlistImg, false, removeBookedImg);
 
         wish_recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         wish_recyclerView.setAdapter(booksAdapter);
@@ -114,7 +116,7 @@ public class WishlistFragment extends Fragment {
                                     books.add(book);
 
 
-                            }
+                                }
                                 container.setVisibility(View.VISIBLE);
                                 booksAdapter.setBooks(books);
                             }

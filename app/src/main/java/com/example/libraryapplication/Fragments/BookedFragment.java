@@ -64,6 +64,8 @@ public class BookedFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         bookedRecyclerView.setLayoutManager(layoutManager);
 
+        int removeWishlistImg = R.drawable.remove_button;
+        int removeBookedImg = R.drawable.unbook_icon;
         booksAdapter = new BooksAdapter(false, true, new OnBookClickListener() {
             @Override
             public void onItemClick(Book book) {
@@ -77,7 +79,7 @@ public class BookedFragment extends Fragment {
             public void onAddToBookingsClick(Book book) {
                 onRemoveFromBookings(book);
             }
-        });
+        }, false, removeWishlistImg, true, removeBookedImg);
         bookedRecyclerView.setAdapter(booksAdapter);
 
         setUpFirestore();

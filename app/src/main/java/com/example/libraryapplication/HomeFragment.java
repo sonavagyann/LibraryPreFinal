@@ -24,7 +24,10 @@ import com.example.libraryapplication.Adapters.GenresAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 
 import java.text.SimpleDateFormat;
@@ -39,6 +42,7 @@ public class HomeFragment extends Fragment {
 
     private final ArrayList<Book> books = new ArrayList<>();
     private final ArrayList<Book> wishList = new ArrayList<>();
+    private final ArrayList<Book> booked = new ArrayList<>();
     private RecyclerView recyclerView;
     private RecyclerView recyclerView2;
     private BooksAdapter booksAdapter;
@@ -88,6 +92,8 @@ public class HomeFragment extends Fragment {
             viewHolder.itemView.performClick();
         }
 
+        int removeWishlistImg = R.drawable.remove_button;
+        int removeBookedImg = R.drawable.unbook_icon;
         booksAdapter = new BooksAdapter(true, true, new OnBookClickListener() {
             @Override
             public void onItemClick(Book book) {
@@ -103,7 +109,7 @@ public class HomeFragment extends Fragment {
             public void onAddToBookingsClick(Book book) {
                 onAddToBookings(book);
             }
-        });
+        }, false, removeWishlistImg, false, removeBookedImg);
 
         recyclerView2.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView2.setAdapter(booksAdapter);
@@ -122,7 +128,9 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                filterByKeyword(editable.toString());
+                String searchKeyword = editable.toString();
+                String selectedGenre = genresAdapter.getSelectedGenre();
+                filterByKeyword(searchKeyword, selectedGenre);
             }
         });
 
@@ -190,6 +198,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    private String selectedGenre = "";
     private void filterByGenre(int position) {
         ArrayList<Book> filteredList = new ArrayList<>();
 
@@ -205,17 +214,25 @@ public class HomeFragment extends Fragment {
             }
         }
         booksAdapter.setBooks(filteredList);
+        if (position == 0) {
+            selectedGenre = "";
+        }
+        else {
+            selectedGenre = genres[position];
+        }
     }
 
-    private void filterByKeyword(String book) {
+    private void filterByKeyword(String keyword, String category) {
         ArrayList<Book> filteredList = new ArrayList<>();
 
-        for (Book item : books) {
-            if (item.getTitle().toLowerCase().contains(book.toLowerCase()) ||
-                    item.getAuthor().toLowerCase().contains(book.toLowerCase())) {
-                filteredList.add(item);
+        for (Book book : books) {
+            if ((book.getTitle().toLowerCase().contains(keyword.toLowerCase()) ||
+                    book.getAuthor().toLowerCase().contains(keyword.toLowerCase())) &&
+                    (category.equals("All") || book.getGenre().equals(category))) {
+                filteredList.add(book);
             }
         }
+
         booksAdapter.setBooks(filteredList);
     }
 
@@ -249,6 +266,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
+
     private void onAddToBookings(Book book) {
         if(!isConnected()){
             Toast.makeText(getContext(), "No Internet Access", Toast.LENGTH_SHORT).show();
@@ -263,9 +281,9 @@ public class HomeFragment extends Fragment {
                     Toast.makeText(getContext(), "Booked", Toast.LENGTH_SHORT).show();
 
 
-                    Date date = new Date();
-                    @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                    String formattedDate = dateFormat.format(date);
+                    //Date date = new Date();
+                    //@SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                    //String formattedDate = dateFormat.format(date);
                 } else {
                     task.getException().printStackTrace();
                     Toast.makeText(getContext(), "Error adding Book to booking", Toast.LENGTH_SHORT).show();
@@ -274,4 +292,6 @@ public class HomeFragment extends Fragment {
             });
         }
     }
+
+
 }
