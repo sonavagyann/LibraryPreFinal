@@ -24,16 +24,10 @@ import com.example.libraryapplication.Adapters.GenresAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -44,18 +38,16 @@ public class HomeFragment extends Fragment {
     private final ArrayList<Book> books = new ArrayList<>();
     private final ArrayList<Book> wishList = new ArrayList<>();
     private final ArrayList<Book> booked = new ArrayList<>();
-    private RecyclerView recyclerView;
-    private RecyclerView recyclerView2;
     private BooksAdapter booksAdapter;
     private Context context;
     private View loading;
     private View container;
-    private EditText searchView;
     private final CollectionReference db = FirebaseFirestore.getInstance().collection("Books");
     private ListenerRegistration dbListener;
     private ListenerRegistration userListener;
 
-    public HomeFragment() {}
+    public HomeFragment() {
+    }
 
     @SuppressLint("MissingInflatedId")
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,12 +59,12 @@ public class HomeFragment extends Fragment {
 
         super.onViewCreated(view, savedInstanceState);
 
-        if(!isConnected()){
+        if (!isConnected()) {
             Toast.makeText(getContext(), "No Internet Access", Toast.LENGTH_SHORT).show();
         }
 
-        recyclerView = view.findViewById(R.id.recyclerView);
-        recyclerView2 = view.findViewById(R.id.recyclerView2);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        RecyclerView recyclerView2 = view.findViewById(R.id.recyclerView2);
         recyclerView2.setHasFixedSize(true);
         recyclerView.setHasFixedSize(true);
 
@@ -81,7 +73,7 @@ public class HomeFragment extends Fragment {
 
         genres = getResources().getStringArray(R.array.genres);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        GenresAdapter genresAdapter = new GenresAdapter(getContext(), genres, position -> filterByGenre(position));
+        GenresAdapter genresAdapter = new GenresAdapter(getContext(), genres, this::filterByGenre);
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(genresAdapter);
@@ -114,7 +106,7 @@ public class HomeFragment extends Fragment {
         recyclerView2.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView2.setAdapter(booksAdapter);
 
-        searchView = (EditText) view.findViewById(R.id.searchView);
+        EditText searchView = (EditText) view.findViewById(R.id.searchView);
         searchView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -137,9 +129,9 @@ public class HomeFragment extends Fragment {
         setUpFirestore();
     }
 
-    private boolean isConnected(){
-        ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(context.CONNECTIVITY_SERVICE);
-        return connectivityManager.getActiveNetworkInfo()!=null && connectivityManager.getActiveNetworkInfo().isConnectedOrConnecting();
+    private boolean isConnected() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnectedOrConnecting();
     }
 
     @Override
@@ -161,7 +153,9 @@ public class HomeFragment extends Fragment {
                 container.setVisibility(View.VISIBLE);
                 books.clear();
                 books.addAll(snapshots.toObjects(Book.class));
-                booksAdapter.setBooks(books);}loading.setVisibility(View.GONE);
+                booksAdapter.setBooks(books);
+            }
+            loading.setVisibility(View.GONE);
         });
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -177,7 +171,7 @@ public class HomeFragment extends Fragment {
 
                         if (snapshots != null) {
                             List<Map<String, Object>> result = (List<Map<String, Object>>) snapshots.get("books");
-                            if(result != null) {
+                            if (result != null) {
                                 wishList.clear();
                                 for (Map<String, Object> map : result) {
                                     map.get("id");
@@ -186,19 +180,40 @@ public class HomeFragment extends Fragment {
                                     map.get("author");
                                     map.get("pages");
                                     map.get("imageLink");
-                                    map.get("descriptions");
+                                    map.get("description");
                                     map.get("isBooked");
                                     Book book = new Book((String) map.get("id"), (String) map.get("genre"), (String) map.get("title"), (String) map.get("author"),
                                             (String) map.get("pages"), (String) map.get("imageLink"), (String) map.get("description"), (Boolean) map.get("isBooked"));
                                     wishList.add(book);
                                 }
                             }
+                            List<Map<String, Object>> result1 = (List<Map<String, Object>>) snapshots.get("reserved");
+                            if (result1 != null) {
+                                booked.clear();
+                                for (Map<String, Object> map : result1) {
+                                    map.get("id");
+                                    map.get("genre");
+                                    map.get("title");
+                                    map.get("author");
+                                    map.get("pages");
+                                    map.get("imageLink");
+                                    map.get("description");
+                                    map.get("isBooked");
+                                    Book book = new Book((String) map.get("id"), (String) map.get("genre"), (String) map.get("title"), (String) map.get("author"),
+                                            (String) map.get("pages"), (String) map.get("imageLink"), (String) map.get("description"), (Boolean) map.get("isBooked"));
+                                    booked.add(book);
+                                }
+                                List<Book> filteredBooks = new ArrayList<>(books);
+                                for (Book book : booked) {
+                                    filteredBooks.remove(book);
+                                }
+                                booksAdapter.setBooks(filteredBooks);
+                            }
                         }
                     });
         }
     }
 
-    private String selectedGenre = "";
     private void filterByGenre(int position) {
         ArrayList<Book> filteredList = new ArrayList<>();
 
@@ -214,10 +229,10 @@ public class HomeFragment extends Fragment {
             }
         }
         booksAdapter.setBooks(filteredList);
+        String selectedGenre = "";
         if (position == 0) {
             selectedGenre = "";
-        }
-        else {
+        } else {
             selectedGenre = genres[position];
         }
     }
@@ -232,7 +247,6 @@ public class HomeFragment extends Fragment {
                 filteredList.add(book);
             }
         }
-
         booksAdapter.setBooks(filteredList);
     }
 
@@ -259,16 +273,14 @@ public class HomeFragment extends Fragment {
                         .update("books", wishList)
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
-                                Toast.makeText(getContext(), "Book added to wishlist", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Added to wishlist", Toast.LENGTH_SHORT).show();
                             }
                         });
-            }
-            else {
-                Toast.makeText(getContext(), "Book already added to wishlist", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "Already added to wishlist", Toast.LENGTH_SHORT).show();
             }
         }
     }
-
 
     private void onAddToBookings(Book book) {
         if(!isConnected()){
@@ -279,16 +291,24 @@ public class HomeFragment extends Fragment {
             loading.setVisibility(View.VISIBLE);
 
             db.document(book.getTitle()).update("isBooked", true).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    container.setVisibility(View.VISIBLE);
-                    Toast.makeText(getContext(), "Booked", Toast.LENGTH_SHORT).show();
-
-                    //Date date = new Date();
-                    //@SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                    //String formattedDate = dateFormat.format(date);
-                } else {
-                    task.getException().printStackTrace();
-                    Toast.makeText(getContext(), "Error adding Book to booking", Toast.LENGTH_SHORT).show();
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if (user != null) {
+                    if (!booked.contains(book)) {
+                        booked.add(book);
+                        FirebaseFirestore.getInstance()
+                                .collection("Users")
+                                .document(user.getUid())
+                                .update("reserved", booked)
+                                .addOnCompleteListener(task1 -> {
+                                    if (task1.isSuccessful()) {
+                                        Toast.makeText(getContext(), "Booked", Toast.LENGTH_SHORT).show();
+                                        books.remove(book);
+                                        booksAdapter.setBooks(books);
+                                    }
+                                });
+                    } else {
+                        Toast.makeText(getContext(), "Already booked", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 loading.setVisibility(View.GONE);
             });

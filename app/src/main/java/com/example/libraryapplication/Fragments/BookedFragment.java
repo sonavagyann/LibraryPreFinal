@@ -21,19 +21,20 @@ import com.example.libraryapplication.BookActivity;
 import com.example.libraryapplication.Adapters.BooksAdapter;
 import com.example.libraryapplication.OnBookClickListener;
 import com.example.libraryapplication.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class BookedFragment extends Fragment {
     private final ArrayList<Book> books = new ArrayList<>();
 
     private Context context;
-    private RecyclerView bookedRecyclerView;
     private BooksAdapter booksAdapter;
     private View loading;
     private View container;
@@ -55,7 +56,7 @@ public class BookedFragment extends Fragment {
             Toast.makeText(getContext(), "No Internet Access", Toast.LENGTH_SHORT).show();
         }
 
-        bookedRecyclerView = view.findViewById(R.id.booked_recyclerview);
+        RecyclerView bookedRecyclerView = view.findViewById(R.id.booked_recyclerview);
         bookedRecyclerView.setHasFixedSize(true);
 
         loading = view.findViewById(R.id.booked_loading);
@@ -86,51 +87,80 @@ public class BookedFragment extends Fragment {
     }
 
     private boolean isConnected(){
-        ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         return connectivityManager.getActiveNetworkInfo()!=null && connectivityManager.getActiveNetworkInfo().isConnectedOrConnecting();
     }
 
     @Override
     public void onDestroyView() {
-        dbListener.remove();
         super.onDestroyView();
+        if (dbListener != null) {
+            dbListener.remove();
+        }
     }
 
     private void setUpFirestore() {
         loading.setVisibility(View.VISIBLE);
-        dbListener = db.whereEqualTo("isBooked", true).addSnapshotListener((snapshots, error) -> {
-            if (error != null) {
-                error.printStackTrace();
-                return;
-            }
-            if (snapshots != null ) {
-                container.setVisibility(View.VISIBLE);
-                books.clear();
-                books.addAll(snapshots.toObjects(Book.class));
-                booksAdapter.setBooks(books);
-            }
-            loading.setVisibility(View.GONE);
-        });
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            FirebaseFirestore.getInstance()
+                    .collection("Users")
+                    .document(user.getUid())
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            List<Map<String, Object>> result = (List<Map<String, Object>>) task.getResult().getData().get("reserved");
+                            if(result!= null) {
+                                books.clear();
+
+                                for (Map<String, Object> map : result) {
+                                    map.get("id");
+                                    map.get("genre");
+                                    map.get("title");
+                                    map.get("author");
+                                    map.get("pages");
+                                    map.get("imageLink");
+                                    map.get("descriptions");
+                                    map.get("isBooked");
+                                    Book book = new Book((String) map.get("id"), (String) map.get("genre"), (String) map.get("title"), (String) map.get("author"),
+                                            (String) map.get("pages"), (String) map.get("imageLink"), (String) map.get("description"), (Boolean) map.get("isBooked"));
+                                    books.add(book);
+
+
+                                }
+                                container.setVisibility(View.VISIBLE);
+                                booksAdapter.setBooks(books);
+                            }
+                        } else {
+                            Toast.makeText(getContext(), "Error Fetching booked list", Toast.LENGTH_SHORT).show();
+                        }
+                        loading.setVisibility(View.GONE);
+                    });
+        }
     }
 
     private void onRemoveFromBookings(Book book) {
-        container.setVisibility(View.GONE);
+        container.setVisibility(View.VISIBLE);
         loading.setVisibility(View.VISIBLE);
 
         db.document(book.getTitle()).update("isBooked", false).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                container.setVisibility(View.VISIBLE);
-                Toast.makeText(getContext(), "Unbooked", Toast.LENGTH_SHORT).show();
-
-                Date date = new Date();
-                @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                String formattedDate = dateFormat.format(date);
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            if (user != null) {
+                if (books.contains(book)) {
+                    books.remove(book);
+                    booksAdapter.setBooks(books);
+                    FirebaseFirestore.getInstance()
+                            .collection("Users")
+                            .document(user.getUid())
+                            .update("reserved", books)
+                            .addOnCompleteListener(task1 -> {
+                                if (task1.isSuccessful()) {
+                                    Toast.makeText(getContext(), "Unbooked", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                }
             }
-            else{
-                task.getException().printStackTrace();
-                Toast.makeText(getContext(), "Error removing book from Booking", Toast.LENGTH_SHORT).show();
-            }
-            loading.setVisibility(View.GONE);
+            loading.setVisibility(View.VISIBLE);
         });
     }
     private void onBookClick(Book book) {

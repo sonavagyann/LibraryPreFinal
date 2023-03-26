@@ -33,7 +33,6 @@ public class WishlistFragment extends Fragment {
 
     Context context;
     private final ArrayList<Book> books = new ArrayList<>();
-    private RecyclerView wish_recyclerView;
     private BooksAdapter booksAdapter;
     private View loading;
     private View container;
@@ -53,7 +52,7 @@ public class WishlistFragment extends Fragment {
             Toast.makeText(getContext(), "No Internet Access", Toast.LENGTH_SHORT).show();
         }
 
-        wish_recyclerView = view.findViewById(R.id.wishlist_recyclerview);
+        RecyclerView wish_recyclerView = view.findViewById(R.id.wishlist_recyclerview);
         wish_recyclerView.setHasFixedSize(true);
 
         loading = view.findViewById(R.id.wishlist_loading);
@@ -83,7 +82,7 @@ public class WishlistFragment extends Fragment {
     }
 
     private boolean isConnected(){
-        ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         return connectivityManager.getActiveNetworkInfo()!=null && connectivityManager.getActiveNetworkInfo().isConnectedOrConnecting();
     }
 
