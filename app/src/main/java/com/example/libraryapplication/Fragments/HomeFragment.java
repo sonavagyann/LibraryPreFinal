@@ -1,4 +1,4 @@
-package com.example.libraryapplication;
+package com.example.libraryapplication.Fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -21,11 +21,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.libraryapplication.Adapters.Book;
 import com.example.libraryapplication.Adapters.BooksAdapter;
 import com.example.libraryapplication.Adapters.GenresAdapter;
+import com.example.libraryapplication.BookActivity;
+import com.example.libraryapplication.OnBookClickListener;
+import com.example.libraryapplication.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
