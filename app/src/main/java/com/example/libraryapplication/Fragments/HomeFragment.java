@@ -29,7 +29,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +42,7 @@ public class HomeFragment extends Fragment {
     private final ArrayList<Book> wishList = new ArrayList<>();
     private final ArrayList<Book> booked = new ArrayList<>();
     private BooksAdapter booksAdapter;
+
     private Context context;
     private View loading;
     private View container;
