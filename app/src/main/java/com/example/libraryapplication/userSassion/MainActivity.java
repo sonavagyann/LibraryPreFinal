@@ -53,13 +53,8 @@ public class MainActivity extends AppCompatActivity {
         if(currentUser != null){
             if(currentUser.isEmailVerified()){
                 startActivity(new Intent(MainActivity.this, HomeActivity.class));
-                Toast.makeText(this, "You are logged in", Toast.LENGTH_SHORT).show();
                 finish();
             }
         }
-        //else{
-            //startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            //finish();
-        //}
     }
 }

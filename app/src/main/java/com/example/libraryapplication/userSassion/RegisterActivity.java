@@ -46,39 +46,40 @@ public class RegisterActivity extends AppCompatActivity {
 
         String em = email.getText().toString();
         String pass = password.getText().toString();
-        String repass = regbutton.getText().toString();
+        String repass = repassword.getText().toString();
 
         if(em.equals("") || pass.equals("")) {
             Toast.makeText(RegisterActivity.this, "Fill all the fields", Toast.LENGTH_SHORT).show();
         }
-        else if(pass.equals(repass)){
+        if(!pass.equals(repass)){
             Toast.makeText(RegisterActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
         }
         else {
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
         }
-        mAuth.createUserWithEmailAndPassword(em, pass).addOnCompleteListener( this, task -> {
-            if (task.isSuccessful()) {
-                mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(task1 -> {
-                    if(task1.isSuccessful()){
-                        progressDialog.dismiss();
-                        Toast.makeText(RegisterActivity.this, "Verify your email", Toast.LENGTH_SHORT).show();
-                        Map<String, List<Book>> data = new HashMap<>();
-                        FirebaseFirestore.getInstance().collection("Users").document(mAuth.getCurrentUser().getUid()).set(data);
-                        sendUserToNextActivity();
-                        //finish();
-                    }
-                    else{
-                        progressDialog.dismiss();
-                        Toast.makeText(RegisterActivity.this, "" + task1.getException(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-            } else {
-                progressDialog.dismiss();
-                Toast.makeText(RegisterActivity.this, "" + task.getException(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        if(pass.equals(repass)) {
+            mAuth.createUserWithEmailAndPassword(em, pass).addOnCompleteListener(this, task -> {
+                if (task.isSuccessful()) {
+                    mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(task1 -> {
+                        if (task1.isSuccessful()) {
+                            progressDialog.dismiss();
+                            Toast.makeText(RegisterActivity.this, "Verify your email", Toast.LENGTH_SHORT).show();
+                            Map<String, List<Book>> data = new HashMap<>();
+                            FirebaseFirestore.getInstance().collection("Users").document(mAuth.getCurrentUser().getUid()).set(data);
+                            sendUserToNextActivity();
+                            //finish();
+                        } else {
+                            progressDialog.dismiss();
+                            Toast.makeText(RegisterActivity.this, "" + task1.getException(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    progressDialog.dismiss();
+                    Toast.makeText(RegisterActivity.this, "" + task.getException(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     private void sendUserToNextActivity() {
