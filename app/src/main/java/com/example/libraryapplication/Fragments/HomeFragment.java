@@ -30,7 +30,9 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -294,28 +296,34 @@ public class HomeFragment extends Fragment {
             container.setVisibility(View.GONE);
             loading.setVisibility(View.VISIBLE);
 
-            db.document(book.getTitle()).update("isBooked", true).addOnCompleteListener(task -> {
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if (user != null) {
-                    if (!booked.contains(book)) {
-                        booked.add(book);
-                        FirebaseFirestore.getInstance()
-                                .collection("Users")
-                                .document(user.getUid())
-                                .update("reserved", booked)
-                                .addOnCompleteListener(task1 -> {
-                                    if (task1.isSuccessful()) {
-                                        Toast.makeText(getContext(), "Booked", Toast.LENGTH_SHORT).show();
-                                        books.remove(book);
-                                        booksAdapter.setBooks(books);
-                                    }
-                                });
-                    } else {
-                        Toast.makeText(getContext(), "Already booked", Toast.LENGTH_SHORT).show();
-                    }
-                }
-                loading.setVisibility(View.GONE);
-            });
+            long timestamp = System.currentTimeMillis();
+
+            SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy, HH:mm:ss");
+            String bookedAt = formatter.format(new Date(timestamp));
+
+            db.document(book.getTitle()).update("isBooked", true, "bookedBy", FirebaseAuth.getInstance().getCurrentUser().getUid(), "bookedAt", bookedAt)
+                    .addOnCompleteListener(task -> {
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        if (user != null) {
+                            if (!booked.contains(book)) {
+                                booked.add(book);
+                                FirebaseFirestore.getInstance()
+                                        .collection("Users")
+                                        .document(user.getUid())
+                                        .update("reserved", booked)
+                                        .addOnCompleteListener(task1 -> {
+                                            if (task1.isSuccessful()) {
+                                                Toast.makeText(getContext(), "Booked", Toast.LENGTH_SHORT).show();
+                                                books.remove(book);
+                                                booksAdapter.setBooks(books);
+                                            }
+                                        });
+                            } else {
+                                Toast.makeText(getContext(), "Already booked", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        loading.setVisibility(View.GONE);
+                    });
         }
     }
 }
